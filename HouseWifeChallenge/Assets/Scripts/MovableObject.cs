@@ -11,9 +11,11 @@ public class MovableObject : MonoBehaviour {
     public Color moveColorOk = new Color(0, 1, 0, 0.5f);
     public Color moveColorNOk = new Color(1, 0, 0, 0.5f);
     private SpriteRenderer sprite;
+    private Collider2D cd2D;
     private Color initColor;
     private Vector2 initPosition;
     bool isMoving;
+    Vector2 size;
 
     public void Start()
     {
@@ -22,6 +24,8 @@ public class MovableObject : MonoBehaviour {
         worldMap.CompressBounds();
         sprite = GetComponent<SpriteRenderer>();
         initColor = sprite.color;
+        cd2D = GetComponent<Collider2D>();
+        size = new Vector2(cd2D.bounds.size.x, cd2D.bounds.size.y);
     }
 
     public void Update()
@@ -41,16 +45,15 @@ public class MovableObject : MonoBehaviour {
 
     public void OnMove()
     {
-        Vector3Int cellPosition = getCellPositionFromMouseInput();
+        Vector3Int cellPosition = GetCellPositionFromMouseInput();
         sprite.color = IsFreeCell(cellPosition) ? moveColorOk : moveColorNOk;
         Vector3 cellWorldPosition = worldMap.GetCellCenterWorld(cellPosition);
         transform.position = new Vector3(cellWorldPosition.x, cellWorldPosition.y, transform.position.z);
-        //Debug.Log("OnMove");
     }
 
     public void OnEndMove()
     {
-        Vector3Int cellPosition = getCellPositionFromMouseInput();
+        Vector3Int cellPosition = GetCellPositionFromMouseInput();
         if (IsFreeCell(cellPosition))
         {
             EnableColliders();
@@ -59,7 +62,7 @@ public class MovableObject : MonoBehaviour {
         }
     }
 
-    public Vector3Int getCellPositionFromMouseInput()
+    public Vector3Int GetCellPositionFromMouseInput()
     {
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         return worldMap.WorldToCell(mousePosition);
@@ -68,26 +71,34 @@ public class MovableObject : MonoBehaviour {
 
     public void DisableColliders()
     {
-        if (GetComponent<Collider2D>())
-        {
-            GetComponent<Collider2D>().isTrigger = true;
-        }
+        cd2D.isTrigger = true;
     }
 
     public void EnableColliders()
     {
-        if (GetComponent<Collider2D>())
-        {
-            GetComponent<Collider2D>().isTrigger = false;
-        }
+        cd2D.isTrigger = false;
     }
 
     public bool IsFreeCell(Vector3Int cellPosition)
     {
+        // Take into account the size of the object
+        bool isOk = true;
+        for (int x = 0; x < size.x; x++)
+        {
+            for (int y = 0; y < size.y; y++)
+            {
+                isOk &= HasCollider(cellPosition + Vector3Int.right * x + Vector3Int.up * y);
+            }
+        }
+        return isOk;
+    }
+
+    public bool HasCollider(Vector3Int cellPosition)
+    {
         if (!worldMap.HasTile(cellPosition))
         {
             return false;
-        }    
+        }
         Vector3 cellWorldPosition = worldMap.GetCellCenterWorld(cellPosition);
         Collider2D[] colliders = Physics2D.OverlapCircleAll(cellWorldPosition, worldMap.cellSize.x / 4);
         if (colliders.Length == 1 && colliders[0].gameObject == gameObject)
@@ -96,6 +107,7 @@ public class MovableObject : MonoBehaviour {
         }
         return colliders.Length == 0;
     }
+
 
     public void OnMouseDown()
     {
