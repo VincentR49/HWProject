@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 212530499542344230}
   - component: {fileID: 61464479020972648}
   - component: {fileID: 114937352613654580}
+  - component: {fileID: 114153497351891726}
   m_Layer: 0
   m_Name: Chair
   m_TagString: Untagged
@@ -35,8 +36,8 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1970294452618398}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.42, y: 2.53, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.2967825, y: 3.1368518, z: -0.33880866}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -67,6 +68,21 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &114153497351891726
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1970294452618398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55c2dbe88a7e3fa44ac0088b2942fb4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteRight: {fileID: 21300000, guid: 63935d0c6784db54ea79ec8822595f3a, type: 3}
+  spriteLeft: {fileID: 21300000, guid: 485c2b9d8ff0d0044a54bcb6af0c7e1f, type: 3}
+  spriteTop: {fileID: 21300000, guid: f93c1cd5c01742c41aff63f9a55a473b, type: 3}
+  spriteDown: {fileID: 21300000, guid: d1fb2db1fb69e4344833b7adbd37b62a, type: 3}
 --- !u!114 &114937352613654580
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -115,7 +131,7 @@ SpriteRenderer:
   m_SortingLayerID: 1570552089
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 05eb1c993864d6c4d8e46ed1e92c94c6, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 63935d0c6784db54ea79ec8822595f3a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

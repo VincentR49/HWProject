@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.Tilemaps;
 
 [RequireComponent(typeof(Sprite))]
+[RequireComponent(typeof(Collider2D))]
 public class MovableObject : MonoBehaviour {
 
     private Tilemap worldMap;
@@ -36,6 +37,7 @@ public class MovableObject : MonoBehaviour {
         }
     }
 
+    
     public void OnBeginMove()
     {
         isMoving = true;
