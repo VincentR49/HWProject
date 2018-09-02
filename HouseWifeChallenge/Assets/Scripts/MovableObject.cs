@@ -20,9 +20,7 @@ public class MovableObject : MonoBehaviour {
 
     public void Start()
     {
-        // init attributes
-        worldMap = GlobalManager.GetGroundTileMap();
-        worldMap.CompressBounds();
+        worldMap = GameManager.instance.worldMap;
         sprite = GetComponent<SpriteRenderer>();
         initColor = sprite.color;
         cd2D = GetComponent<Collider2D>();
@@ -37,7 +35,18 @@ public class MovableObject : MonoBehaviour {
         }
     }
 
-    
+    public void OnMouseDown()
+    {
+        if (isMoving)
+        {
+            OnEndMove();
+        }
+        else
+        {
+            OnBeginMove();
+        }
+    }
+
     public void OnBeginMove()
     {
         isMoving = true;
@@ -109,18 +118,4 @@ public class MovableObject : MonoBehaviour {
         }
         return colliders.Length == 0;
     }
-
-
-    public void OnMouseDown()
-    {
-        if (isMoving)
-        {
-            OnEndMove();
-        }
-        else
-        {
-            OnBeginMove();
-        }
-    }
-
 }
