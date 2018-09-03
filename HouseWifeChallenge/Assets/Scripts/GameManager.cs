@@ -13,10 +13,14 @@ public class GameManager : MonoBehaviour {
 
     public Tilemap worldMap;
     public static GameManager instance = null;
-    public GameMode currentMode = GameMode.ObjectPlacement; // make it private + dynamic change
+	private Dictionary<GameMode, System.Type[]> scriptPerModeDic; 
 
-    private Dictionary<GameMode, MonoBehaviour> modeScriptDict; // dictionnaire liant les games modes aux scripts lui étant spécifiques
-
+    public GameMode CurrentMode
+	{
+		get  { return CurrentMode; }
+		set { ChangeGameMode(value);}
+	}	
+    
     private void Awake()
     {
         if (instance == null)
@@ -38,15 +42,21 @@ public class GameManager : MonoBehaviour {
             worldMap = GetGroundTileMap();
         }
         worldMap.CompressBounds();
-        
     }
 
     private void InitScriptDict()
     {
-        modeScriptDict = new Dictionary<GameMode, MonoBehaviour>();
-        // A continuer ...
+        modeScriptDict = new Dictionary<GameMode, Type>();
+        modeScriptDict.Add(GameMode.PlayerPhase, new Type[]
+		{ 
+			typeof(PlayerController)
+		});
+		modeScriptDict.Add(GameMode.ObjectPlacement, new Type[] 
+		{ 
+			typeof(MovableObject),
+			typeof(RotableObject)
+		});
     }
-
 
     private static Tilemap GetGroundTileMap()
     {
@@ -60,4 +70,33 @@ public class GameManager : MonoBehaviour {
         }
         return null;
     }
+	
+	private void ChangeGameMode(GameMode newGameMode)
+	{
+		GameMode oldGameMode = CurrentMode;
+		MonoBehaviour[] scriptsToDisable = GetAllInstancesOfMonoScript(scriptPerModeDic.Item[oldGameMode]);
+		foreach (MonoBehaviour script in scriptsToDisable)
+		{
+			script.enable = false;
+		}
+		MonoBehaviour[] scriptsToEnable = GetAllInstancesOfMonoScript(scriptPerModeDic.Item[newGameMode]);
+		foreach (MonoBehaviour script in scriptsToEnable)
+		{
+			script.enable = true;
+		}
+		CurrentMode = newGameMode;
+	}
+	
+	private MonoBehaviour[] GetAllInstancesOfMonoScript(Type monoType)
+	{
+		if (monoType.IsSubclassOf(typeof(MonoBehaviour))
+		{
+			Debug.Log("Error, not Monobehaviour script");
+		}
+		else
+		{
+			MonoBehaviour[] instances = FindObjectsOfType(typeof(monoType)) as MonoBehaviour[];
+			return instances;
+		}
+	}
 }
