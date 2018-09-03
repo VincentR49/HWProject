@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -13,13 +14,9 @@ public class GameManager : MonoBehaviour {
 
     public Tilemap worldMap;
     public static GameManager instance = null;
-	private Dictionary<GameMode, System.Type[]> scriptPerModeDic; 
-    public GameMode CurrentMode
-	{
-		get  { return CurrentMode; }
-		set { ChangeGameMode(value);}
-	}	
-    
+	private Dictionary<GameMode, System.Type[]> scriptsDict;
+    private GameMode currentMode;
+   
     private void Awake()
     {
         if (instance == null)
@@ -33,80 +30,85 @@ public class GameManager : MonoBehaviour {
         DontDestroyOnLoad(gameObject);
     }
 
-	private void Start()
-	{
-		Init();
-	}
-	
-    private void Init()
+    public void Start()
     {
-        if (worldMap == null)
-        {
-            worldMap = GetGroundTileMap();
-        }
-        worldMap.CompressBounds();
-		InitScriptDict();
+        InitScriptDict();
+        DisableAllSpecificScripts();
+        SetCurrentGameMode(GameMode.ObjectPlacement);
     }
-
 
 	// Set the dictionary containing the scripts specific to each gameMode
     private void InitScriptDict()
     {
-        modeScriptDict = new Dictionary<GameMode, Type>();
-        modeScriptDict.Add(GameMode.PlayerPhase, new Type[]
+        scriptsDict = new Dictionary<GameMode, Type[]>();
+        scriptsDict.Add(GameMode.PlayerPhase, new Type[]
 		{ 
 			typeof(PlayerController)
 		});
-		modeScriptDict.Add(GameMode.ObjectPlacement, new Type[] 
+        scriptsDict.Add(GameMode.ObjectPlacement, new Type[] 
 		{ 
 			typeof(MovableObject),
 			typeof(RotableObject)
 		});
     }
-
-	// Get the TileMap named Ground
-    private static Tilemap GetGroundTileMap()
-    {
-        Tilemap[] tilemaps = FindObjectsOfType<Tilemap>();
-        foreach (Tilemap tm in tilemaps)
-        {
-            if (tm.name == "Ground")
-            {
-                return tm;
-            }
-        }
-        return null;
-    }
 	
 	// Change the current gameMode and enable / disable the related scripts
-	private void ChangeGameMode(GameMode newGameMode)
+	public void SetCurrentGameMode(GameMode newGameMode)
 	{
-		GameMode oldGameMode = CurrentMode;
-		MonoBehaviour[] scriptsToDisable = GetAllInstancesOfMonoScript(scriptPerModeDic.Item[oldGameMode]);
-		foreach (MonoBehaviour script in scriptsToDisable)
-		{
-			script.enable = false;
-		}
-		MonoBehaviour[] scriptsToEnable = GetAllInstancesOfMonoScript(scriptPerModeDic.Item[newGameMode]);
-		foreach (MonoBehaviour script in scriptsToEnable)
-		{
-			script.enable = true;
-		}
-		CurrentMode = newGameMode;
+		GameMode oldGameMode = currentMode;
+        foreach (Type type in scriptsDict[oldGameMode])
+        {
+            EnableScriptsOfType(false, type);
+        }
+
+        foreach (Type type in scriptsDict[newGameMode])
+        {
+            EnableScriptsOfType(true, type);
+        }
+        currentMode = newGameMode;
+        Debug.Log("GameMode changed: " + newGameMode);
 	}
 	
-	// Get all the instances of the given MonoBehaviour type
-	// Return an error if the type if not a MonoBehaviour
-	private MonoBehaviour[] GetAllInstancesOfMonoScript(Type monoType)
+    private void EnableScriptsOfType(bool enable, Type type)
+    {
+        MonoBehaviour[] scripts = GetAllInstancesOfMonoScript(type);
+        foreach (MonoBehaviour script in scripts)
+        {
+            script.enabled = enable;
+        }
+    }
+
+    private void DisableAllSpecificScripts()
+    {
+        foreach (KeyValuePair<GameMode, Type[]> entry in scriptsDict)
+        {
+            foreach (Type type in entry.Value)
+            {
+                EnableScriptsOfType(false, type);
+            }
+        }
+    }
+
+
+    // Get all the instances of the given MonoBehaviour type
+    // Return an error if the type if not a MonoBehaviour
+    private MonoBehaviour[] GetAllInstancesOfMonoScript(Type monoType)
 	{
-		if (monoType.IsSubclassOf(typeof(MonoBehaviour))
+		if (monoType.IsSubclassOf(typeof(MonoBehaviour)))
 		{
-			Debug.Log("Error, not Monobehaviour script");
+            MonoBehaviour[] instances = FindObjectsOfType(monoType) as MonoBehaviour[];
+            return instances; 
 		}
 		else
 		{
-			MonoBehaviour[] instances = FindObjectsOfType(typeof(monoType)) as MonoBehaviour[];
-			return instances;
-		}
+            Debug.Log("Error, not Monobehaviour script");
+            return null;
+        }
 	}
+
+    public GameMode GetGameMode()
+    {
+        return currentMode;
+    }
+
 }

@@ -76,7 +76,7 @@ public class PathFindingGrid : MonoBehaviour {
     public bool HasCollider(Vector2 pos)
     {
         Collider2D[] colliders = Physics2D.OverlapCircleAll(pos, CellSize / 4);
-        return colliders.Length == 0;
+        return colliders.Length > 0;
     }
 
 

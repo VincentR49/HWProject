@@ -18,7 +18,8 @@ public class MovableObject : MonoBehaviour {
     private Color initColor;
     private Vector2 initPosition;
     bool isMoving;
-    Vector2 size; // object size based on Colliders2D
+    float Width => cd2D.bounds.size.x;
+    float Height => cd2D.bounds.size.y;
 
     public void Start()
     {
@@ -26,7 +27,6 @@ public class MovableObject : MonoBehaviour {
         sprite = GetComponent<SpriteRenderer>();
         initColor = sprite.color;
         cd2D = GetComponent<Collider2D>();
-        size = new Vector2(cd2D.bounds.size.x, cd2D.bounds.size.y);
     }
 
     public void Update()
@@ -98,9 +98,9 @@ public class MovableObject : MonoBehaviour {
     public bool IsFreeCell(Vector3Int cellPosition)
     {   
         bool isOk = true;
-        for (int x = 0; x < size.x; x++)
+        for (int x = 0; x < Mathf.Ceil(Width); x++)
         {
-            for (int y = 0; y < size.y; y++)
+            for (int y = 0; y < Mathf.Ceil(Height); y++)
             {
                 isOk &= HasCollider(cellPosition + Vector3Int.right * x + Vector3Int.up * y);
             }
