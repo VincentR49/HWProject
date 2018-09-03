@@ -6,17 +6,19 @@ using UnityEngine.Tilemaps;
 
 [RequireComponent(typeof(Sprite))]
 [RequireComponent(typeof(Collider2D))]
+// Enable to move a 2D gameObject by clicking on it
 public class MovableObject : MonoBehaviour {
-
-    private Tilemap worldMap;
+ 
     public Color moveColorOk = new Color(0, 1, 0, 0.5f);
     public Color moveColorNOk = new Color(1, 0, 0, 0.5f);
+	
+	private Tilemap worldMap;
     private SpriteRenderer sprite;
     private Collider2D cd2D;
     private Color initColor;
     private Vector2 initPosition;
     bool isMoving;
-    Vector2 size;
+    Vector2 size; // object size based on Colliders2D
 
     public void Start()
     {
@@ -73,6 +75,7 @@ public class MovableObject : MonoBehaviour {
         }
     }
 
+	// TO change -> change the Vector3 to Vector3
     public Vector3Int GetCellPositionFromMouseInput()
     {
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -90,9 +93,10 @@ public class MovableObject : MonoBehaviour {
         cd2D.isTrigger = false;
     }
 
+	// Detect if the given cell is free
+	// Take into account the size of the object
     public bool IsFreeCell(Vector3Int cellPosition)
-    {
-        // Take into account the size of the object
+    {   
         bool isOk = true;
         for (int x = 0; x < size.x; x++)
         {
@@ -104,6 +108,7 @@ public class MovableObject : MonoBehaviour {
         return isOk;
     }
 
+	// Check if there is a collider in the current cell
     public bool HasCollider(Vector3Int cellPosition)
     {
         if (!worldMap.HasTile(cellPosition))

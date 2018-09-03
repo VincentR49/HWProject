@@ -14,7 +14,6 @@ public class GameManager : MonoBehaviour {
     public Tilemap worldMap;
     public static GameManager instance = null;
 	private Dictionary<GameMode, System.Type[]> scriptPerModeDic; 
-
     public GameMode CurrentMode
 	{
 		get  { return CurrentMode; }
@@ -32,9 +31,13 @@ public class GameManager : MonoBehaviour {
             Destroy(gameObject);
         }
         DontDestroyOnLoad(gameObject);
-        Init();
     }
 
+	private void Start()
+	{
+		Init();
+	}
+	
     private void Init()
     {
         if (worldMap == null)
@@ -42,8 +45,11 @@ public class GameManager : MonoBehaviour {
             worldMap = GetGroundTileMap();
         }
         worldMap.CompressBounds();
+		InitScriptDict();
     }
 
+
+	// Set the dictionary containing the scripts specific to each gameMode
     private void InitScriptDict()
     {
         modeScriptDict = new Dictionary<GameMode, Type>();
@@ -58,6 +64,7 @@ public class GameManager : MonoBehaviour {
 		});
     }
 
+	// Get the TileMap named Ground
     private static Tilemap GetGroundTileMap()
     {
         Tilemap[] tilemaps = FindObjectsOfType<Tilemap>();
@@ -71,6 +78,7 @@ public class GameManager : MonoBehaviour {
         return null;
     }
 	
+	// Change the current gameMode and enable / disable the related scripts
 	private void ChangeGameMode(GameMode newGameMode)
 	{
 		GameMode oldGameMode = CurrentMode;
@@ -87,6 +95,8 @@ public class GameManager : MonoBehaviour {
 		CurrentMode = newGameMode;
 	}
 	
+	// Get all the instances of the given MonoBehaviour type
+	// Return an error if the type if not a MonoBehaviour
 	private MonoBehaviour[] GetAllInstancesOfMonoScript(Type monoType)
 	{
 		if (monoType.IsSubclassOf(typeof(MonoBehaviour))

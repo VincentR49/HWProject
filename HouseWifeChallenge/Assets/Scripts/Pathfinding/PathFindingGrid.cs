@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using static Utils;
 
-// A intégrer dans le game manager ?
+
 public class PathFindingGrid : MonoBehaviour {
 
     public Tilemap worldMap; // tileMap defining the word size and grid size
@@ -27,6 +27,7 @@ public class PathFindingGrid : MonoBehaviour {
         InitNodes();
 	}
 	
+	// Init the nodes[,] containing all the node of the grid
     public void InitNodes()
     {
         nodes = new Node[Width, Height];
@@ -46,6 +47,8 @@ public class PathFindingGrid : MonoBehaviour {
         }
     }
 
+	// Put all the parent of the grid nodes to null
+	// Always use at the begining of A* algo
     public void ResetNodesParent()
     {
         foreach (Node node in nodes)
@@ -57,6 +60,7 @@ public class PathFindingGrid : MonoBehaviour {
         }
     }
 
+	// Check for all nodes if they contain a collider
     public void ScanObstacles()
     {
         foreach (Node node in nodes)
@@ -64,30 +68,21 @@ public class PathFindingGrid : MonoBehaviour {
             if (node != null)
             {
                 node.isWall = HasCollider(node.worldPos);
-                //Debug.Log(string.Format("Wall detected at position ({0},{1}) ", node.worldPos.x, node.worldPos.y));
             }
         }
     }
 
+	// Check if the given position contains a collider
     public bool HasCollider(Vector2 pos)
     {
         Collider2D[] colliders = Physics2D.OverlapCircleAll(pos, CellSize / 4);
-        if (colliders.Length == 0)
-        {
-            return false;
-        }
-        else
-        {
-            return !CollidersIsPlayer(colliders);
-        }
+        return colliders.Length == 0;
     }
 
-    public bool CollidersIsPlayer(Collider2D[] colliders)
-    {
-        return colliders.Length >= 1 && colliders[0].gameObject.name.Equals("Player");
-    }
 
-    // Return the neighbours node of one defined node
+    // Return the free neighbours node of one defined node
+	// If a wall exist on the bottom, its neihbours nodes right and left are considered are not walkable.
+	// Same for left / right / top neighbour wall.
     public List<Node> GetNeighbours(Node node)
     {
         List<Node> neighbours = new List<Node>();
@@ -132,7 +127,7 @@ public class PathFindingGrid : MonoBehaviour {
         return neighbours;
     }
 
-
+	// Return true if the given position is free (not wall, not empty and not outside the borders)
     public bool CanWalkPosition(int x, int y)
     {
         if (x < 0 || y < 0 || x > Width - 1 || y > Height - 1)
@@ -145,6 +140,7 @@ public class PathFindingGrid : MonoBehaviour {
         }
     }
 
+	// Return the Node corresponding the guven world position
     public Node GetNodeFromWorldPosition(Vector2 position)
     {
         Vector2Int localPosition = GetNodePositionFromWorldPosition(position);
@@ -159,6 +155,7 @@ public class PathFindingGrid : MonoBehaviour {
 		}
     }
 
+	// Get the node position in the nodes array (x, y) from the world position
     public Vector2Int GetNodePositionFromWorldPosition(Vector2 position)
     {
         Vector2 nodeZeroPosition = nodes[0, 0].worldPos;

@@ -10,11 +10,13 @@ public class PathFindingManager : MonoBehaviour {
     public static int limitStepAlgo = 1000;
     private PathFindingGrid grid;
 	private Queue<Node> currentPath;
+	
 	public void Start()
 	{
 		grid = gameObject.GetComponent<PathFindingGrid>();
 	}
 
+	// Get the path to follow using a A* start algorithm
     public Queue<Node> GetPathWithAStarAlgo(Vector2 startPos, Vector2 targetPos)
     {
         List<Node> openList = new List<Node>();
@@ -23,16 +25,11 @@ public class PathFindingManager : MonoBehaviour {
         Node startNode = grid.GetNodeFromWorldPosition(startPos);
         Node targetNode = grid.GetNodeFromWorldPosition(targetPos);
 
-        if (startNode == null || targetNode == null)
-        {
-            return null;
-        }
-
         // First step
         // Update H value of all the nodes in the grid
         grid.ResetNodesParent();
         grid.ScanObstacles();
-        if (targetNode.isWall)
+        if (targetNode.isWall || startNode == null || targetNode == null)
         {
             return null;
         }
@@ -51,7 +48,7 @@ public class PathFindingManager : MonoBehaviour {
             openList.Remove(currentNode);
 			closeList.AddUnique(currentNode);
          
-            // Ajout des noeuds voisins dans l'open list s'ils n'existent pas
+            // Add neighbour nodes to the open list if they are not in the closeList
             List<Node> neighbours = grid.GetNeighbours(currentNode);
             foreach (Node node in neighbours)
             {   
@@ -65,7 +62,6 @@ public class PathFindingManager : MonoBehaviour {
 					openList.AddUnique(node);
                 }
             }
-            // Choose the node with the lower F cost
             currentNode = GetBestCandidate (openList, targetNode);
             cpt++;
             if (cpt > limitStepAlgo)
@@ -75,9 +71,8 @@ public class PathFindingManager : MonoBehaviour {
             }
         }
         Debug.Log("number of iterations: " + cpt);
-        Queue<Node> path = GetPathFromNode(currentNode);
-		currentPath = path;
-        return path;
+        currentPath = GetPathFromNode(currentNode);
+        return currentPath;
     }
 
 	
@@ -103,8 +98,8 @@ public class PathFindingManager : MonoBehaviour {
 		return candidate;
 	}
 
-	// Retourne le chemin menant au noeud final
-	// S'arrête lorsque le noeud est null (startPosition)
+	// Get the path leading to the final node using the node parent chain
+	// Stop when the node is null (starting position)
 	private static Queue<Node> GetPathFromNode(Node node)
 	{
 		Queue<Node> pathFromEnd = new Queue<Node>();
@@ -116,6 +111,7 @@ public class PathFindingManager : MonoBehaviour {
 		return new Queue<Node>(pathFromEnd.Reverse());
 	}
 
+	// Conver a Queue<Node> into a Queue<Vector2> containing the nodes world position
     public static Queue<Vector2> ConvertPathToWorldCoord(Queue<Node> nodes)
     {
         if (nodes == null) return null;

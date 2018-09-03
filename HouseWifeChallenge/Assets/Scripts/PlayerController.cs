@@ -4,15 +4,18 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using static Utils;
 
+[RequireComponent(typeof(PathFindingManager))]
 public class PlayerController : MonoBehaviour {
 
     public float speed;
     private Rigidbody2D rb2d;
-    Queue<Vector2> path; // --> change to Queue
-	Vector2 nextPathPosition;
     Vector2 playerMove = Vector2.zero;
+	
+	// Pathfing related attributes
 	PathFindingManager pathFindingManager;
 	bool isFollowingPath;
+	Queue<Vector2> path; 
+	Vector2 nextPathPosition;
 	
     void Start()
     {
@@ -25,16 +28,13 @@ public class PlayerController : MonoBehaviour {
     {
 		playerMove = Vector2.zero; // reset each time
 		
-		// Check Inputs
-
-		if (Input.GetMouseButtonDown(1))
+		if (Input.GetMouseButtonDown(1)) // moving to the mouse position
 		{ 
 			Vector3 mousePositon = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 			Vector2 targetPos = new Vector2(mousePositon.x, mousePositon.y);
 			MoveTo(targetPos);
 		}
 		
-		// A simplifier
 		if (isFollowingPath)
 		{
 			FollowPath();
@@ -44,9 +44,10 @@ public class PlayerController : MonoBehaviour {
 	// Called every "physics" frame
     void FixedUpdate()
     {
-        rb2d.velocity = playerMove.normalized * speed;
+        rb2d.velocity = playerMove.normalized * speed; // move the player
     }
 	
+	// Go to the given position using an A* pathfinding algorithm
 	public void MoveTo(Vector2 newPosition)
 	{
 		Vector2 startPos = new Vector2(transform.position.x, transform.position.y);
@@ -54,7 +55,8 @@ public class PlayerController : MonoBehaviour {
         StartFollowingPath (PathFindingManager.ConvertPathToWorldCoord(nodePath));
 	}
 	
-	public void StartFollowingPath(Queue<Vector2> path)
+	// Set the new path to follow
+	private void StartFollowingPath(Queue<Vector2> path)
 	{
 		this.path = path;
 		isFollowingPath = true;
@@ -68,14 +70,16 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 	
-	public void StopFollowingPath()
+	// Stop following the current path
+	private void StopFollowingPath()
 	{
 		isFollowingPath = false;
 		path = null;
         nextPathPosition = new Vector2(transform.position.x, transform.position.y);
 	}
 	
-	public void FollowPath()
+	// Follow the current path by updating the playerMove vector
+	private void FollowPath()
 	{
         Vector2 currentPosition = new Vector2(transform.position.x, transform.position.y);
         Vector2 movement = nextPathPosition - currentPosition;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Enable the rotation of a 2D gameObject
 public class RotableObject : MonoBehaviour {
 
     public enum Orientation
@@ -17,7 +18,7 @@ public class RotableObject : MonoBehaviour {
     public Sprite spriteTop;
     public Sprite spriteDown;
     private SpriteRenderer sprite;
-    private Orientation orientation;
+    private Orientation orientation; // current orientation of the gameObject
 
     private void Start()
     {
