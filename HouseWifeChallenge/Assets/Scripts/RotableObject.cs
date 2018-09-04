@@ -19,16 +19,18 @@ public class RotableObject : MonoBehaviour {
     public Sprite spriteDown;
     private SpriteRenderer sprite;
     private Orientation orientation; // current orientation of the gameObject
-
-    private void Start()
-    {
-        Init();
+	private Collider2D cd2D;
+	
+    public void Start()
+    {	
+        cd2D = GetComponent<Collider2D>();
+		InitSprite();
     }
 
-    void Init ()
-    {
-        sprite = GetComponent<SpriteRenderer>();
-        if (sprite.sprite == spriteLeft)
+	private void InitSprite()
+	{
+		sprite = GetComponent<SpriteRenderer>();
+		if (sprite.sprite == spriteLeft)
         {
             orientation = Orientation.Left;
         }
@@ -45,7 +47,7 @@ public class RotableObject : MonoBehaviour {
             orientation = Orientation.Right;
         }
         UpdateSprite();
-    }
+	}
 
     public void OnMouseOver()
     {
@@ -85,9 +87,20 @@ public class RotableObject : MonoBehaviour {
                 newSprite = spriteRight;
                 break;
         }
-        if (newSprite != null)
+        if (newSprite != null && newSprite != sprite.sprite)
         {
             sprite.sprite = newSprite;
+			ResetCollider();
         }
     }
+	
+	void ResetCollider()
+	{
+		Type colliderType = typeof(cd2D);
+		if (cd2D != null)
+		{
+			Destroy(cd2D);
+		}
+		cd2D = AddComponent<colliderType>();
+	}
 }

@@ -28,11 +28,11 @@ public class GameManager : MonoBehaviour {
             Destroy(gameObject);
         }
         DontDestroyOnLoad(gameObject);
+		InitScriptDict();
     }
 
     public void Start()
-    {
-        InitScriptDict();
+    { 
         DisableAllSpecificScripts();
         SetCurrentGameMode(GameMode.ObjectPlacement);
     }
