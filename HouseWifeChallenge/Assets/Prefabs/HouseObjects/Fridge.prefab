@@ -20,8 +20,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4611662239314628}
   - component: {fileID: 212959085256188406}
-  - component: {fileID: 114530191839389950}
-  - component: {fileID: 61782969475761356}
+  - component: {fileID: 61598705193991504}
+  - component: {fileID: 114098768284189640}
+  - component: {fileID: 114854131721365696}
+  - component: {fileID: 114867494832634568}
   m_Layer: 0
   m_Name: Fridge
   m_TagString: Untagged
@@ -42,7 +44,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &61782969475761356
+--- !u!61 &61598705193991504
 BoxCollider2D:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -67,7 +69,22 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 2}
   m_EdgeRadius: 0
---- !u!114 &114530191839389950
+--- !u!114 &114098768284189640
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1188276859644674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55c2dbe88a7e3fa44ac0088b2942fb4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteRight: {fileID: 0}
+  spriteLeft: {fileID: 0}
+  spriteTop: {fileID: 0}
+  spriteDown: {fileID: 0}
+--- !u!114 &114854131721365696
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -80,6 +97,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveColorOk: {r: 0, g: 1, b: 0, a: 0.5}
   moveColorNOk: {r: 1, g: 0, b: 0, a: 0.5}
+--- !u!114 &114867494832634568
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1188276859644674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 379e843f6eb2ff14bbf39360e83e9206, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &212959085256188406
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 // Base class for any houseObject
+[RequireComponent(typeof(SpriteRenderer))]
 public class HouseObject : MonoBehaviour {
 
-	public static GameObject houseObjects;
+    public static GameObject houseObjects;
 	
 	private void Awake()
 	{
@@ -13,13 +15,17 @@ public class HouseObject : MonoBehaviour {
 		{
 			houseObjects = new GameObject("HouseObjects");
 		}
-		this.transform.parent = houseObjects;
-	}
+        this.transform.parent = houseObjects.transform;
+       
+
+    }
 	
     public void Reset()
     {
-		gameObject.AddComponent<MovableObject>();
+        gameObject.AddComponent<BoxCollider2D>();
+        gameObject.AddComponent<MovableObject>();
 		gameObject.AddComponent<RotableObject>();
-		gameObject.AddComponent<BoxCollider2D>();
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer.sortingLayerName = "Objects";
     }
 }

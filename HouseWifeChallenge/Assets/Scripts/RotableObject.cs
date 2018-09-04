@@ -1,9 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 // Enable the rotation of a 2D gameObject
-public class RotableObject : MonoBehaviour {
+[RequireComponent(typeof(Collider2D))]
+public class RotableObject : TileBasedObject {
 
     public enum Orientation
     {
@@ -17,19 +20,16 @@ public class RotableObject : MonoBehaviour {
     public Sprite spriteLeft;
     public Sprite spriteTop;
     public Sprite spriteDown;
-    private SpriteRenderer sprite;
     private Orientation orientation; // current orientation of the gameObject
-	private Collider2D cd2D;
-	
-    public void Start()
-    {	
-        cd2D = GetComponent<Collider2D>();
+
+    new public void Start()
+    {
+        base.Start();
 		InitSprite();
     }
 
 	private void InitSprite()
 	{
-		sprite = GetComponent<SpriteRenderer>();
 		if (sprite.sprite == spriteLeft)
         {
             orientation = Orientation.Left;
@@ -51,22 +51,38 @@ public class RotableObject : MonoBehaviour {
 
     public void OnMouseOver()
     {
-        if (Input.GetMouseButtonDown(1))
+        if (enabled)
         {
-            Rotate();
-        }
+            if (Input.GetMouseButtonDown(1))
+            {
+                Rotate();
+            }
+        } 
     }
 
-    void Rotate()
+    Orientation GetNextOrientation()
     {
         Orientation newOrientation = orientation + 1;
         if (newOrientation > Orientation.Top)
         {
             newOrientation = Orientation.Right;
         }
-        orientation = newOrientation;
-        UpdateSprite();
+        return newOrientation;
     }
+
+    void Rotate()
+    {
+        Orientation oldOrientation = orientation;
+        orientation = GetNextOrientation();
+        UpdateSprite();
+        if (!IsPositionFree(CurrentCell))
+        {
+            Debug.Log("Rotation canceled go back to old Orientation: ");
+            orientation = oldOrientation;
+            UpdateSprite(); 
+        }
+    }
+
 
     void UpdateSprite()
     {
@@ -93,14 +109,4 @@ public class RotableObject : MonoBehaviour {
 			ResetCollider();
         }
     }
-	
-	void ResetCollider()
-	{
-		Type colliderType = typeof(cd2D);
-		if (cd2D != null)
-		{
-			Destroy(cd2D);
-		}
-		cd2D = AddComponent<colliderType>();
-	}
 }

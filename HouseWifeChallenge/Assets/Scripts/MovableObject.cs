@@ -7,26 +7,18 @@ using UnityEngine.Tilemaps;
 [RequireComponent(typeof(Sprite))]
 [RequireComponent(typeof(Collider2D))]
 // Enable to move a 2D gameObject by clicking on it
-public class MovableObject : MonoBehaviour {
+public class MovableObject : TileBasedObject {
  
     public Color moveColorOk = new Color(0, 1, 0, 0.5f);
     public Color moveColorNOk = new Color(1, 0, 0, 0.5f);
-	
-	private Tilemap worldMap;
-    private SpriteRenderer sprite;
-    private Collider2D cd2D;
     private Color initColor;
     private Vector2 initPosition;
     bool isMoving;
-    float Width => cd2D.bounds.size.x;
-    float Height => cd2D.bounds.size.y;
 
-    public void Start()
+    new public void Start()
     {
-        worldMap = GameManager.instance.worldMap;
-        sprite = GetComponent<SpriteRenderer>();
+        base.Start();
         initColor = sprite.color;
-        cd2D = GetComponent<Collider2D>();
     }
 
     public void Update()
@@ -39,13 +31,16 @@ public class MovableObject : MonoBehaviour {
 
     public void OnMouseDown()
     {
-        if (isMoving)
+        if (enabled)
         {
-            OnEndMove();
-        }
-        else
-        {
-            OnBeginMove();
+            if (isMoving)
+            {
+                OnEndMove();
+            }
+            else
+            {
+                OnBeginMove();
+            }
         }
     }
 
@@ -59,7 +54,7 @@ public class MovableObject : MonoBehaviour {
     public void OnMove()
     {
         Vector3Int cellPosition = GetCellPositionFromMouseInput();
-        sprite.color = IsFreeCell(cellPosition) ? moveColorOk : moveColorNOk;
+        sprite.color = CanMoveTo(cellPosition) ? moveColorOk : moveColorNOk;
         Vector3 cellWorldPosition = worldMap.GetCellCenterWorld(cellPosition);
         transform.position = new Vector3(cellWorldPosition.x, cellWorldPosition.y, transform.position.z);
     }
@@ -67,7 +62,7 @@ public class MovableObject : MonoBehaviour {
     public void OnEndMove()
     {
         Vector3Int cellPosition = GetCellPositionFromMouseInput();
-        if (IsFreeCell(cellPosition))
+        if (CanMoveTo(cellPosition))
         {
             EnableColliders();
             isMoving = false;
@@ -82,45 +77,8 @@ public class MovableObject : MonoBehaviour {
         return worldMap.WorldToCell(mousePosition);
     }
 
-
-    public void DisableColliders()
+    private bool CanMoveTo(Vector3Int cellPosition)
     {
-        cd2D.isTrigger = true;
-    }
-
-    public void EnableColliders()
-    {
-        cd2D.isTrigger = false;
-    }
-
-	// Detect if the given cell is free
-	// Take into account the size of the object
-    public bool IsFreeCell(Vector3Int cellPosition)
-    {   
-        bool isOk = true;
-        for (int x = 0; x < Mathf.Ceil(Width); x++)
-        {
-            for (int y = 0; y < Mathf.Ceil(Height); y++)
-            {
-                isOk &= HasCollider(cellPosition + Vector3Int.right * x + Vector3Int.up * y);
-            }
-        }
-        return isOk;
-    }
-
-	// Check if there is a collider in the current cell
-    public bool HasCollider(Vector3Int cellPosition)
-    {
-        if (!worldMap.HasTile(cellPosition))
-        {
-            return false;
-        }
-        Vector3 cellWorldPosition = worldMap.GetCellCenterWorld(cellPosition);
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(cellWorldPosition, worldMap.cellSize.x / 4);
-        if (colliders.Length == 1 && colliders[0].gameObject == gameObject)
-        {
-            return true;
-        }
-        return colliders.Length == 0;
+        return IsPositionFree(cellPosition);
     }
 }

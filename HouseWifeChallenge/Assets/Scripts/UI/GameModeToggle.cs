@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameModeTogle : MonoBehaviour {
+public class GameModeToggle : MonoBehaviour {
 
     public Toggle playerControlToggle;
     public Toggle objectMovementToggle;
