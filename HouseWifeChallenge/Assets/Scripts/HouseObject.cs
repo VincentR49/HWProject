@@ -16,7 +16,7 @@ public class HouseObject : MonoBehaviour {
 		this.transform.parent = houseObjects;
 	}
 	
-    public void Start()
+    public void Reset()
     {
 		gameObject.AddComponent<MovableObject>();
 		gameObject.AddComponent<RotableObject>();
