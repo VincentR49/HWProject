@@ -48,20 +48,13 @@ public class TileBasedObject : MonoBehaviour {
     // Take into account the size of the object
     public bool IsPositionFree(Vector3Int cellPosition)
     {
-        bool isOk = true;
-        if (Cd2D != null)
+        bool isOk = true; 
+        for (int x = 0; x < Mathf.Ceil(Width); x++)
         {
-            for (int x = 0; x < Mathf.Ceil(Width); x++)
+            for (int y = 0; y < Mathf.Ceil(Height); y++)
             {
-                for (int y = 0; y < Mathf.Ceil(Height); y++)
-                {
-                    isOk &= HasCollider(cellPosition + Vector3Int.right * x + Vector3Int.up * y);
-                }
+                isOk &= HasCollider(cellPosition + Vector3Int.right * x + Vector3Int.up * y);
             }
-        }
-        else
-        {
-            isOk = false;
         }
         return isOk;
     }

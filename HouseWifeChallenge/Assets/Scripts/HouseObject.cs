@@ -16,8 +16,6 @@ public class HouseObject : MonoBehaviour {
 			houseObjects = new GameObject("HouseObjects");
 		}
         this.transform.parent = houseObjects.transform;
-       
-
     }
 	
     public void Reset()
