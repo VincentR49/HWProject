@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour {
     {
 		playerMove = Vector2.zero; // reset each time
 		
-		if (Input.GetMouseButtonDown(1)) // moving to the mouse position
+		if (Input.GetMouseButtonDown(0)) // moving to the mouse position
 		{ 
 			Vector3 mousePositon = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 			Vector2 targetPos = new Vector2(mousePositon.x, mousePositon.y);

@@ -21,30 +21,31 @@ public class RotableObject : TileBasedObject {
     public Sprite spriteTop;
     public Sprite spriteDown;
     private Orientation orientation; // current orientation of the gameObject
+    private Dictionary<Orientation, Sprite> spriteDic;
 
     new public void Start()
     {
         base.Start();
-		InitSprite();
+        spriteDic = new Dictionary<Orientation, Sprite>
+        {
+            { Orientation.Right, spriteRight },
+            { Orientation.Left, spriteLeft },
+            { Orientation.Top, spriteTop },
+            { Orientation.Down, spriteDown }
+        };
+        InitSprite();
     }
 
 	private void InitSprite()
 	{
-		if (sprite.sprite == spriteLeft)
+        orientation = Orientation.Right;
+        foreach (KeyValuePair<Orientation, Sprite> keySet in spriteDic)
         {
-            orientation = Orientation.Left;
-        }
-        else if (sprite.sprite == spriteTop)
-        {
-            orientation = Orientation.Top;
-        }
-        else if (sprite.sprite == spriteDown)
-        {
-            orientation = Orientation.Down;
-        }
-        else // right
-        {
-            orientation = Orientation.Right;
+            if (keySet.Value == sprite.sprite)
+            {
+                orientation = keySet.Key;
+                break;
+            }
         }
         UpdateSprite();
 	}
@@ -86,23 +87,7 @@ public class RotableObject : TileBasedObject {
 
     void UpdateSprite()
     {
-        Sprite newSprite;
-        switch (orientation)
-        {
-            case Orientation.Left:
-                newSprite = spriteLeft;
-                break;
-            case Orientation.Top:
-                newSprite = spriteTop;
-                break;
-            case Orientation.Down:
-                newSprite = spriteDown;
-                break;
-            case Orientation.Right:
-            default:
-                newSprite = spriteRight;
-                break;
-        }
+        Sprite newSprite = spriteDic[orientation];
         if (newSprite != null && newSprite != sprite.sprite)
         {
             sprite.sprite = newSprite;
