@@ -118,7 +118,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9276bede63fa96e4399be733bcc28503, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  worldMap: {fileID: 0}
 --- !u!114 &114843939333431632
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -55,7 +55,7 @@ public class MovableObject : TileBasedObject {
     {
         Vector3Int cellPosition = GetCellPositionFromMouseInput();
         sprite.color = CanMoveTo(cellPosition) ? moveColorOk : moveColorNOk;
-        Vector3 cellWorldPosition = worldMap.GetCellCenterWorld(cellPosition);
+        Vector3 cellWorldPosition = WorldMap.GetCellCenterWorld(cellPosition);
         transform.position = new Vector3(cellWorldPosition.x, cellWorldPosition.y, transform.position.z);
     }
 
@@ -74,7 +74,7 @@ public class MovableObject : TileBasedObject {
     public Vector3Int GetCellPositionFromMouseInput()
     {
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        return worldMap.WorldToCell(mousePosition);
+        return WorldMap.WorldToCell(mousePosition);
     }
 
     private bool CanMoveTo(Vector3Int cellPosition)

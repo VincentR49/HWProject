@@ -10,7 +10,8 @@ public class CameraManager : MonoBehaviour {
 	public float speed;
     public float offset;
     public float borderOffset = 2; // in world unit -> outside word portion visible
-    public Tilemap worldMap;
+    public TileMapVariable worldMap;
+    private Tilemap WorldMap => worldMap.Value;
 
     Vector3 cameraMove;
     Vector2 minMaxXPosition;
@@ -68,13 +69,13 @@ public class CameraManager : MonoBehaviour {
 	
 	private void UpdateCameraLimit()
 	{
-		worldMap.CompressBounds();
-        float cellSize = worldMap.cellSize.x;
-        Vector2 cellZeroPosition = worldMap.CellToWorld(new Vector3Int(worldMap.cellBounds.xMin, worldMap.cellBounds.yMin, 0));
+		WorldMap.CompressBounds();
+        float cellSize = WorldMap.cellSize.x;
+        Vector2 cellZeroPosition = WorldMap.CellToWorld(new Vector3Int(WorldMap.cellBounds.xMin, WorldMap.cellBounds.yMin, 0));
         minMaxXPosition = new Vector2(cellZeroPosition.x + CameraSize.x / 2 - borderOffset, 
-		                              cellZeroPosition.x + worldMap.size.x * cellSize - CameraSize.x / 2 + borderOffset);
+		                              cellZeroPosition.x + WorldMap.size.x * cellSize - CameraSize.x / 2 + borderOffset);
         minMaxYPosition = new Vector2(cellZeroPosition.y + CameraSize.y / 2 - borderOffset, 
-		                              cellZeroPosition.y + worldMap.size.y * cellSize - CameraSize.y / 2 + borderOffset);
+		                              cellZeroPosition.y + WorldMap.size.y * cellSize - CameraSize.y / 2 + borderOffset);
         Debug.Log("Camera min/max position: x: " + minMaxXPosition + " y: " + minMaxYPosition);
 	}
 }

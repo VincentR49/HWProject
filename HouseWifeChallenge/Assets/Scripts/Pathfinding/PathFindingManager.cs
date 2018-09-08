@@ -4,16 +4,16 @@ using UnityEngine;
 using System.Linq;
 using static Utils;
 
-[RequireComponent(typeof(PathFindingGrid))]
+[RequireComponent(typeof(TilemapBasedGrid))]
 public class PathFindingManager : MonoBehaviour {
 
     public static int limitStepAlgo = 1000;
-    private PathFindingGrid grid;
+    private TilemapBasedGrid grid;
 	private Queue<Node> currentPath;
 	
 	public void Start()
 	{
-		grid = gameObject.GetComponent<PathFindingGrid>();
+		grid = gameObject.GetComponent<TilemapBasedGrid>();
 	}
 
 	// Get the path to follow using a A* start algorithm
@@ -29,7 +29,7 @@ public class PathFindingManager : MonoBehaviour {
         // Update H value of all the nodes in the grid
         grid.ResetNodesParent();
         grid.ScanObstacles();
-        if (targetNode.isWall || startNode == null || targetNode == null)
+        if (targetNode == null || startNode == null  || targetNode.isWall)
         {
             return null;
         }

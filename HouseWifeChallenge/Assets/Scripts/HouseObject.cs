@@ -7,22 +7,22 @@ using UnityEngine;
 [RequireComponent(typeof(SpriteRenderer))]
 public class HouseObject : MonoBehaviour {
 
-    public static GameObject houseObjects;
-	
-	private void Awake()
+    public GameObjectSet houseObjects;
+
+    private void Awake()
 	{
-		if (houseObjects == null)
-		{
-			houseObjects = new GameObject("HouseObjects");
-		}
-        this.transform.parent = houseObjects.transform;
+        houseObjects.Add(this.gameObject);
+        Init();
     }
-	
-    public void Reset()
+
+
+    public void OnDestroy()
     {
-        gameObject.AddComponent<BoxCollider2D>();
-        gameObject.AddComponent<MovableObject>();
-		gameObject.AddComponent<RotableObject>();
+        houseObjects.Remove(this.gameObject);
+    }
+
+    private void Init()
+    {
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.sortingLayerName = "Objects";
     }

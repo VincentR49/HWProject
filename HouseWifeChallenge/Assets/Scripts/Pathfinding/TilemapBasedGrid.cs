@@ -6,12 +6,14 @@ using UnityEngine.Tilemaps;
 using static Utils;
 
 
-public class PathFindingGrid : MonoBehaviour {
+public class TilemapBasedGrid : MonoBehaviour {
 
-    public Tilemap worldMap; // tileMap defining the word size and grid size
-    public int Width => worldMap.size.x;
-    public int Height => worldMap.size.y;
-    public float CellSize => worldMap.cellSize.x;
+    public TileMapVariable worldMap; // tileMap defining the word size and grid size
+    public int Width => WorldMap.size.x;
+    public int Height => WorldMap.size.y;
+    public float CellSize => WorldMap.cellSize.x;
+    private Tilemap WorldMap => worldMap.Value;
+
 	Node[,] nodes;
 	
     // Use this for initialization
@@ -19,10 +21,10 @@ public class PathFindingGrid : MonoBehaviour {
         Init(worldMap);
     }
 
-	public void Init(Tilemap worldMap)
+	public void Init(TileMapVariable worldMap)
 	{
         this.worldMap = worldMap;
-        this.worldMap.CompressBounds();
+        this.WorldMap.CompressBounds();
         Debug.Log(string.Format("Grid Initialized. Properties: width:{0}, height:{1}, cellsize: {2}", Width, Height, CellSize));
         InitNodes();
 	}
@@ -35,12 +37,12 @@ public class PathFindingGrid : MonoBehaviour {
         {
             for (int y = 0; y < Height; y++)
             {
-                int gridX = worldMap.cellBounds.xMin + x;
-                int gridY = worldMap.cellBounds.yMin + y;
-                Vector3Int localPlace = new Vector3Int(gridX, gridY, (int)worldMap.transform.position.z);
-                if (worldMap.HasTile(localPlace))
+                int gridX = WorldMap.cellBounds.xMin + x;
+                int gridY = WorldMap.cellBounds.yMin + y;
+                Vector3Int localPlace = new Vector3Int(gridX, gridY, (int)WorldMap.transform.position.z);
+                if (WorldMap.HasTile(localPlace))
                 {
-                    Vector3 worldPos = worldMap.GetCellCenterWorld(localPlace);
+                    Vector3 worldPos = WorldMap.GetCellCenterWorld(localPlace);
                     nodes[x, y] = new Node(x, y, new Vector2(worldPos.x, worldPos.y));
                 }
             }

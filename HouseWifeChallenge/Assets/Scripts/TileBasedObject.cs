@@ -5,18 +5,19 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 [RequireComponent(typeof(BoxCollider2D))]
-public class TileBasedObject : MonoBehaviour {
+[RequireComponent(typeof(SpriteRenderer))]
+public abstract class TileBasedObject : MonoBehaviour {
 
+    public TileMapVariable worldMap;
     protected BoxCollider2D Cd2D => GetComponent<BoxCollider2D>(); 
     protected float Width => sprite.bounds.size.x;
     protected float Height => sprite.bounds.size.y;
-    protected Tilemap worldMap;
+    protected Tilemap WorldMap => worldMap.Value;
     protected SpriteRenderer sprite;
-    protected Vector3Int CurrentCell => worldMap.WorldToCell(transform.position);
+    protected Vector3Int CurrentCell => WorldMap.WorldToCell(transform.position);
 
     // Use this for initialization
     public void Start () {
-        worldMap = GameManager.instance.worldMap;
         sprite = GetComponent<SpriteRenderer>();   
     }
 
@@ -62,12 +63,12 @@ public class TileBasedObject : MonoBehaviour {
     // Check if there is a collider in the current cell
     public bool IsTileFree(Vector3Int cellPosition)
     {
-        if (!worldMap.HasTile(cellPosition))
+        if (!WorldMap.HasTile(cellPosition))
         {
             return false;
         }
-        Vector3 cellWorldPosition = worldMap.GetCellCenterWorld(cellPosition);
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(cellWorldPosition, worldMap.cellSize.x / 4);
+        Vector3 cellWorldPosition = WorldMap.GetCellCenterWorld(cellPosition);
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(cellWorldPosition, WorldMap.cellSize.x / 4);
         if (colliders.Length == 1 && colliders[0].gameObject == gameObject)
         {
             return true;

@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour {
     public void Start()
     { 
         DisableAllSpecificScripts();
-        SetCurrentGameMode(GameMode.ObjectPlacement);
+        SetCurrentGameMode(GameMode.PlayerPhase);
     }
 
 	// Set the dictionary containing the scripts specific to each gameMode
