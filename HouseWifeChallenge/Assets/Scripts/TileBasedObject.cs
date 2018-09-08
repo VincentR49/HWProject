@@ -53,14 +53,14 @@ public class TileBasedObject : MonoBehaviour {
         {
             for (int y = 0; y < Mathf.Ceil(Height); y++)
             {
-                isOk &= HasCollider(cellPosition + Vector3Int.right * x + Vector3Int.up * y);
+                isOk &= IsTileFree(cellPosition + Vector3Int.right * x + Vector3Int.up * y);
             }
         }
         return isOk;
     }
 
     // Check if there is a collider in the current cell
-    public bool HasCollider(Vector3Int cellPosition)
+    public bool IsTileFree(Vector3Int cellPosition)
     {
         if (!worldMap.HasTile(cellPosition))
         {
