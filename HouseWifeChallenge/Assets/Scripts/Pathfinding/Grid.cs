@@ -5,23 +5,22 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using static Utils;
 
-
-public class TilemapBasedGrid : MonoBehaviour {
+[CreateAssetMenu (menuName = "PathFinding/Grid", fileName = "Grid")]
+public class Grid : ScriptableObject {
 
     public TileMapVariable worldMap; // tileMap defining the word size and grid size
     public int Width => WorldMap.size.x;
     public int Height => WorldMap.size.y;
     public float CellSize => WorldMap.cellSize.x;
     private Tilemap WorldMap => worldMap.Value;
-
 	Node[,] nodes;
-	
-    // Use this for initialization
-    void Start() {
+
+    private void OnEnable()
+    {
         Init(worldMap);
     }
 
-	public void Init(TileMapVariable worldMap)
+    public void Init(TileMapVariable worldMap)
 	{
         this.worldMap = worldMap;
         this.WorldMap.CompressBounds();

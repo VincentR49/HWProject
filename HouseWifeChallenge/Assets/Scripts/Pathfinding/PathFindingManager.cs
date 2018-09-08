@@ -4,17 +4,13 @@ using UnityEngine;
 using System.Linq;
 using static Utils;
 
-[RequireComponent(typeof(TilemapBasedGrid))]
+
 public class PathFindingManager : MonoBehaviour {
 
     public static int limitStepAlgo = 1000;
-    private TilemapBasedGrid grid;
-	private Queue<Node> currentPath;
-	
-	public void Start()
-	{
-		grid = gameObject.GetComponent<TilemapBasedGrid>();
-	}
+    private Queue<Node> currentPath;
+    public Grid grid;
+
 
 	// Get the path to follow using a A* start algorithm
     public Queue<Node> GetPathWithAStarAlgo(Vector2 startPos, Vector2 targetPos)

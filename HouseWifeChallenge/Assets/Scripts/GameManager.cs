@@ -47,8 +47,8 @@ public class GameManager : MonoBehaviour {
 		});
         scriptsDict.Add(GameMode.ObjectPlacement, new Type[] 
 		{ 
-			typeof(MovableObject),
-			typeof(RotableObject)
+			typeof(Movable),
+			typeof(Rotable)
 		});
     }
 	

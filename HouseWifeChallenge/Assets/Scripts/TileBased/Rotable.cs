@@ -4,9 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-// Enable the rotation of a 2D gameObject
-[RequireComponent(typeof(Collider2D))]
-public class RotableObject : TileBasedObject {
+
+public class Rotable : TileBasedBehaviour {
 
     public enum Orientation
     {
@@ -93,5 +92,19 @@ public class RotableObject : TileBasedObject {
             sprite.sprite = newSprite;
 			ResetCollider();
         }
+    }
+
+    // Destruction and creation of a new collider
+    private void ResetCollider()
+    {
+        Debug.Log("Reset Collider, old width: " + Width + ", old height: " + Height);
+        bool isTrigger = Cd2D.isTrigger;
+        foreach (BoxCollider2D bc2D in GetComponents<BoxCollider2D>())
+        {
+            Destroy(bc2D); // to be sure to delet all the colliders
+        }
+        gameObject.AddComponent<BoxCollider2D>();
+        Cd2D.isTrigger = isTrigger;
+        Debug.Log("new width: " + Width + ", new height: " + Height);
     }
 }

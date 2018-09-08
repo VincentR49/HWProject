@@ -4,9 +4,8 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 // Mouse moving + pixel perfect camera ----
-public class CameraManager : MonoBehaviour {
+public class CameraController : MonoBehaviour {
 
-    public int pixelRes = 64;
 	public float speed;
     public float offset;
     public float borderOffset = 2; // in world unit -> outside word portion visible
@@ -16,21 +15,23 @@ public class CameraManager : MonoBehaviour {
     Vector3 cameraMove;
     Vector2 minMaxXPosition;
     Vector2 minMaxYPosition;
-	
-	Vector2 CameraSize
-	{
+    float MoveSpeed => speed * Time.deltaTime;
+
+
+    Vector2 CameraSize
+    {
         get
         {
             Camera camera = GetComponent<Camera>();
             float camHeight = 2f * camera.orthographicSize;
-            return new Vector2 (camHeight * camera.aspect, camHeight);
+            return new Vector2(camHeight * camera.aspect, camHeight);
         }
     }
-	
+
     // Use this for initialization
-    void Start () {
+    void Start ()
+    {
 		cameraMove = new Vector3(transform.position.x, transform.position.y, transform.position.z);
-        UpdateCameraSize();
         UpdateCameraLimit();
     }
 
@@ -39,33 +40,24 @@ public class CameraManager : MonoBehaviour {
         //Move camera
         if ((Input.mousePosition.x > Screen.width - offset) && transform.position.x < minMaxXPosition.y)
         {
-            cameraMove.x += MoveSpeed();
+            cameraMove.x += MoveSpeed;
         }
         if ((Input.mousePosition.x < offset) && transform.position.x > minMaxXPosition.x)
         {
-            cameraMove.x -= MoveSpeed();
+            cameraMove.x -= MoveSpeed;
         }
         if ((Input.mousePosition.y > Screen.height - offset) && transform.position.y < minMaxYPosition.y)
         {
-            cameraMove.y += MoveSpeed();
+            cameraMove.y += MoveSpeed;
         }
         if ((Input.mousePosition.y < offset) && transform.position.y > minMaxYPosition.x)
         {
-            cameraMove.y -= MoveSpeed();
+            cameraMove.y -= MoveSpeed;
         }
         transform.position = cameraMove;
     }
 
-    float MoveSpeed()
-    {
-        return speed * Time.deltaTime;
-    }
-	
-	// Pixel perfect size
-	public void UpdateCameraSize()
-	{
-        GetComponent<Camera>().orthographicSize = Screen.height / pixelRes / 2;
-    }
+  
 	
 	private void UpdateCameraLimit()
 	{

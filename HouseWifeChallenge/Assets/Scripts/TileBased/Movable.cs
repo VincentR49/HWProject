@@ -4,10 +4,9 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Tilemaps;
 
-[RequireComponent(typeof(Sprite))]
-[RequireComponent(typeof(Collider2D))]
+
 // Enable to move a 2D gameObject by clicking on it
-public class MovableObject : TileBasedObject {
+public class Movable : TileBasedBehaviour {
  
     public Color moveColorOk = new Color(0, 1, 0, 0.5f);
     public Color moveColorNOk = new Color(1, 0, 0, 0.5f);
@@ -54,7 +53,7 @@ public class MovableObject : TileBasedObject {
     public void OnMove()
     {
         Vector3Int cellPosition = GetCellPositionFromMouseInput();
-        sprite.color = CanMoveTo(cellPosition) ? moveColorOk : moveColorNOk;
+        sprite.color = IsPositionFree(cellPosition) ? moveColorOk : moveColorNOk;
         Vector3 cellWorldPosition = WorldMap.GetCellCenterWorld(cellPosition);
         transform.position = new Vector3(cellWorldPosition.x, cellWorldPosition.y, transform.position.z);
     }
@@ -62,7 +61,7 @@ public class MovableObject : TileBasedObject {
     public void OnEndMove()
     {
         Vector3Int cellPosition = GetCellPositionFromMouseInput();
-        if (CanMoveTo(cellPosition))
+        if (IsPositionFree(cellPosition))
         {
             EnableColliders();
             isMoving = false;
@@ -77,8 +76,13 @@ public class MovableObject : TileBasedObject {
         return WorldMap.WorldToCell(mousePosition);
     }
 
-    private bool CanMoveTo(Vector3Int cellPosition)
+    private void DisableColliders()
     {
-        return IsPositionFree(cellPosition);
+        Cd2D.isTrigger = true;
+    }
+
+    private void EnableColliders()
+    {
+        Cd2D.isTrigger = false;
     }
 }

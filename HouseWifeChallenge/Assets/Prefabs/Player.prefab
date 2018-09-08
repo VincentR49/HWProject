@@ -20,12 +20,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4710748542409824}
   - component: {fileID: 212560118863465368}
-  - component: {fileID: 114421867197857330}
   - component: {fileID: 50087529487723172}
   - component: {fileID: 70603333096527836}
-  - component: {fileID: 114801202962398594}
+  - component: {fileID: 114421867197857330}
   - component: {fileID: 114843939333431632}
-  - component: {fileID: 114538952521529290}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -40,7 +38,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1998963109980608}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.71, y: 4.5, z: 0}
+  m_LocalPosition: {x: 2.549777, y: 2.1271038, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -93,31 +91,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
---- !u!114 &114538952521529290
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1998963109980608}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9fec28f63a4de1b42995f84bc5948171, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  wallColor: {r: 1, g: 0, b: 0, a: 0.19607843}
-  groundColor: {r: 0, g: 1, b: 0, a: 0.19607843}
-  pathColor: {r: 0.7921569, g: 0, b: 1, a: 0.6784314}
---- !u!114 &114801202962398594
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1998963109980608}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9276bede63fa96e4399be733bcc28503, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114843939333431632
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -129,6 +102,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a87bcbf4d9b713418955f71a34f2a1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  grid: {fileID: 11400000, guid: 65d00b6d5731ff848b1b16d897554207, type: 2}
 --- !u!212 &212560118863465368
 SpriteRenderer:
   m_ObjectHideFlags: 1

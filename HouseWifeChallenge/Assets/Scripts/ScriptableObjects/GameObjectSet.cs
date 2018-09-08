@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu]
+[CreateAssetMenu(menuName ="Scriptable Objects/GameObjectSet")]
 public class GameObjectSet : RuntimeSet<GameObject>
 {
 

@@ -8,7 +8,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36d2d2b52e66bb54599118bf87e2bcf7, type: 3}
-  m_Name: HouseObjectList
+  m_Script: {fileID: 11500000, guid: 9276bede63fa96e4399be733bcc28503, type: 3}
+  m_Name: WorldMapGrid
   m_EditorClassIdentifier: 
-  Items: []
+  worldMap: {fileID: 11400000, guid: b8ea45c030b3de442bd0c749c02782ab, type: 2}

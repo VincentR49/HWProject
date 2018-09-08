@@ -20,7 +20,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4138466240110018}
   - component: {fileID: 212297865333621090}
-  - component: {fileID: 114167284803159524}
   - component: {fileID: 61378781532887444}
   - component: {fileID: 114841504099581516}
   - component: {fileID: 114573520926584502}
@@ -69,18 +68,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2, y: 1}
   m_EdgeRadius: 0
---- !u!114 &114167284803159524
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1021112273885734}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 379e843f6eb2ff14bbf39360e83e9206, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  houseObjects: {fileID: 11400000, guid: 66055f860555e6e4dacb1350b6d7e27b, type: 2}
 --- !u!114 &114573520926584502
 MonoBehaviour:
   m_ObjectHideFlags: 1

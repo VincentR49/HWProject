@@ -4,13 +4,9 @@ using UnityEngine;
 using static Utils;
 
 [RequireComponent(typeof(PathFindingManager))]
-[RequireComponent(typeof(TilemapBasedGrid))]
 public class PathFindingDebug : MonoBehaviour {
 
-    // textures for visual debug
-    TilemapBasedGrid grid;
-	PathFindingManager pathFindingManager;
-
+    private Grid grid;
 	public Color wallColor = Color.red;
 	public Color groundColor = Color.green;
 	public Color pathColor = Color.blue;
@@ -18,12 +14,13 @@ public class PathFindingDebug : MonoBehaviour {
 	Texture2D wallTexture;
 	Texture2D groundTexture;
 	Texture2D pathTexture;
-  
-	public void Start()
+    PathFindingManager pathFindingManager;
+
+    public void Start()
 	{
 		pathFindingManager = GetComponent<PathFindingManager>();
-		grid = GetComponent<TilemapBasedGrid>();
-		InitTextures();
+        grid = pathFindingManager.grid;
+        InitTextures();
 	}
 
 	public void InitTextures()
