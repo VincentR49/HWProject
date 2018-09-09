@@ -12,22 +12,10 @@ public class GameMode : ScriptableObject {
         ObjectPlacement
     }
 
-    [SerializeField]
     [Tooltip("Current game mode")]
-    private Type gameModeValue;
-    public Type Value
-    {
-        get { return gameModeValue; }
-        set
-        {
-            gameModeValue = value;
-            if (Application.isPlaying)
-            {
-                Event.Raise();
-            }
-        }
-    }
-
+    [SerializeField]
+    private Type value;
+    
     [Tooltip("Event to raise when value changed")]
     public GameEvent Event;
 
@@ -36,5 +24,16 @@ public class GameMode : ScriptableObject {
     {
         Event.Raise();
     }
-    
+
+    public void SetValue (Type value)
+    {
+        Debug.Log("Set new game mode");
+        this.value = value;
+        Event.Raise();
+    }
+
+    public Type GetValue()
+    {
+        return value;
+    }
 }

@@ -6,11 +6,10 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Text))]
 public class GetGameModeText : MonoBehaviour {
 
-
     public GameMode gameMode;
     private Text text;
 
-    private void Start()
+    public void Awake()
     {
         text = GetComponent<Text>();
     }
@@ -18,7 +17,7 @@ public class GetGameModeText : MonoBehaviour {
     public void UpdateText()
     {
         string textToShow = "None";
-        switch(gameMode.Value)
+        switch(gameMode.GetValue())
         {
             case GameMode.Type.PlayerControl:
                 textToShow = "Player Controller";

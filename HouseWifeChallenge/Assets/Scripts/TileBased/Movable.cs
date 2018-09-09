@@ -14,9 +14,9 @@ public class Movable : TileBasedObject {
     private Vector2 initPosition;
     bool isMoving;
 
-    new public void Start()
+    new public void Awake()
     {
-        base.Start();
+        base.Awake();
         initColor = sprite.color;
     }
 

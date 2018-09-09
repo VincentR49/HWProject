@@ -18,7 +18,7 @@ public abstract class TileBasedObject : MonoBehaviour
     protected Vector3Int CurrentCell => WorldMap.WorldToCell(transform.position);
 
     // Use this for initialization
-    public void Start () {
+    public void Awake() {
         sprite = GetComponent<SpriteRenderer>();   
     }
 

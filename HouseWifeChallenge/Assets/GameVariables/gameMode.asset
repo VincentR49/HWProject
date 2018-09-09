@@ -11,5 +11,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0f881d3975825d43908edae917521b4, type: 3}
   m_Name: gameMode
   m_EditorClassIdentifier: 
-  gameModeValue: 2
+  value: 1
   Event: {fileID: 11400000, guid: 63a326f62f0da0448ac2b8578bf35b80, type: 2}

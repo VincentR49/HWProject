@@ -22,9 +22,13 @@ public class Rotable : TileBasedObject {
     private Orientation orientation; // current orientation of the gameObject
     private Dictionary<Orientation, Sprite> spriteDic;
 
-    new public void Start()
+    private new void Awake()
     {
-        base.Start();
+        base.Awake();
+    }
+
+    public void Start()
+    {
         spriteDic = new Dictionary<Orientation, Sprite>
         {
             { Orientation.Right, spriteRight },
