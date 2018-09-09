@@ -6,7 +6,7 @@ using UnityEngine.Tilemaps;
 
 
 // Enable to move a 2D gameObject by clicking on it
-public class Movable : TileBasedBehaviour {
+public class Movable : TileBasedObject {
  
     public Color moveColorOk = new Color(0, 1, 0, 0.5f);
     public Color moveColorNOk = new Color(1, 0, 0, 0.5f);

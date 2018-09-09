@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Action : ScriptableObject {
+public abstract class Action : ScriptableObject
+{
 
     public new string name;
     public string description;
@@ -12,3 +13,4 @@ public abstract class Action : ScriptableObject {
     public abstract bool Execute(GameObject player, GameObject interactibleObject);
 
 }
+

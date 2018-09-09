@@ -6,7 +6,8 @@ using UnityEngine.Tilemaps;
 
 [RequireComponent(typeof(BoxCollider2D))]
 [RequireComponent(typeof(SpriteRenderer))]
-public abstract class TileBasedBehaviour : MonoBehaviour {
+public abstract class TileBasedObject : MonoBehaviour
+{
 
     public TileMapVariable worldMap;
     protected BoxCollider2D Cd2D => GetComponent<BoxCollider2D>(); 

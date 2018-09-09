@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 
-public class Rotable : TileBasedBehaviour {
+public class Rotable : TileBasedObject {
 
     public enum Orientation
     {
