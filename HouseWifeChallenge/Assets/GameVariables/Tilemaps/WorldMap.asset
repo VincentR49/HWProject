@@ -12,3 +12,4 @@ MonoBehaviour:
   m_Name: WorldMap
   m_EditorClassIdentifier: 
   Value: {fileID: 0}
+  defautWorldMapName: Ground
