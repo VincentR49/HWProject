@@ -9,7 +9,7 @@ public class PathFindingManager : MonoBehaviour {
 
     public static int limitStepAlgo = 1000;
     private Queue<Node> currentPath;
-    public Grid grid;
+    public PathfindingGrid grid;
 
 
 	// Get the path to follow using a A* start algorithm
@@ -30,7 +30,7 @@ public class PathFindingManager : MonoBehaviour {
             return null;
         }
 
-        foreach (Node node in grid.getNodes())
+        foreach (Node node in grid.GetNodes())
         {
             if (node != null)
             {

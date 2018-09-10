@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,26 +9,29 @@ public class GameModeChangeHandler : MonoBehaviour {
 
 	[Tooltip("Reference to the current game mode")]
 	public GameMode gameMode;
-	
-	// to simplify ...
-	public void EnableGameModeSpecificComponent()
+
+    [Tooltip("Reference to the game mode script library")]
+    public GameModeBehavioursLibrary gameModeBehavioursLibrary;
+
+    // to simplify ...
+    public void EnableDisblaeGameModeRelatedComponent()
 	{
-		foreach (KeyValuePair<GameMode.Type, Type[] entry in GameModeSpecificMonoBehaviour.GetDictionary())
-		{
-			if (entry.Value == null) continue;
-			
-			bool enable = (entry.Key == gameMode.GetValue());
-			foreach (Type type in entry.Value)
-			{
-				if (type != null && typeof(type).IsSubclassOf (typeof(MonoBehaviour)))
-				{
-					MonoBehaviour component = GetComponent(type) as MonoBehaviour;
-					if (component != null)
-					{
-						component.enabled = enable;
-					}
-				}
-			}
-		}
+        foreach (KeyValuePair<GameMode.Type, Type[]> entry in gameModeBehavioursLibrary.GetDictionary())
+        {
+            bool enable = gameMode.GetValue() == entry.Key;
+            Type[] types = entry.Value;
+            if (types == null) continue;
+            foreach (Type type in types)
+            {
+                if (type.IsSubclassOf(typeof(MonoBehaviour)))
+                {
+                    MonoBehaviour component = GetComponent(type) as MonoBehaviour;
+                    if (component != null)
+                    {
+                        component.enabled = enable;
+                    }
+                }
+            }
+        }
 	}
 }

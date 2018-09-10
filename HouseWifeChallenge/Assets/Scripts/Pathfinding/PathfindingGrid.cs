@@ -6,7 +6,7 @@ using UnityEngine.Tilemaps;
 using static Utils;
 
 [CreateAssetMenu (menuName = "PathFinding/Grid", fileName = "Grid")]
-public class Grid : ScriptableObject {
+public class PathfindingGrid : ScriptableObject {
 
     public TileMapVariable worldMap; // tileMap defining the word size and grid size
     public int Width => WorldMap.size.x;
@@ -167,7 +167,7 @@ public class Grid : ScriptableObject {
         return new Vector2Int(x, y);
     }
 
-    public Node[,] getNodes()
+    public Node[,] GetNodes()
     {
         return nodes;
     }

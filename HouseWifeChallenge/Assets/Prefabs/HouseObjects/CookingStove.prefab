@@ -9,48 +9,47 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1970294452618398}
+  m_RootGameObject: {fileID: 1331363568229740}
   m_IsPrefabAsset: 1
---- !u!1 &1970294452618398
+--- !u!1 &1331363568229740
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4704885278776968}
-  - component: {fileID: 212530499542344230}
-  - component: {fileID: 61181214271675412}
-  - component: {fileID: 114931459965092974}
-  - component: {fileID: 114104834851023826}
-  - component: {fileID: 114516638323236096}
-  - component: {fileID: 114190096123114782}
+  - component: {fileID: 4164793179459786}
+  - component: {fileID: 212856594016826152}
+  - component: {fileID: 61876313190246670}
+  - component: {fileID: 114076495358072994}
+  - component: {fileID: 114679606400004892}
+  - component: {fileID: 114619691434909812}
   m_Layer: 0
-  m_Name: Chair
+  m_Name: CookingStove
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4704885278776968
+--- !u!4 &4164793179459786
 Transform:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1970294452618398}
+  m_GameObject: {fileID: 1331363568229740}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 5.74, y: 3.3747694, z: -0.33880866}
+  m_LocalPosition: {x: 1.4950294, y: 1.11, z: -0.33880866}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &61181214271675412
+--- !u!61 &61876313190246670
 BoxCollider2D:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1970294452618398}
+  m_GameObject: {fileID: 1331363568229740}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
@@ -70,42 +69,26 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2, y: 1}
   m_EdgeRadius: 0
---- !u!114 &114104834851023826
+--- !u!114 &114076495358072994
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1970294452618398}
+  m_GameObject: {fileID: 1331363568229740}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4c409b7affc3955439ef71f3266ec992, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameMode: {fileID: 11400000, guid: b92ce93430f3b3841b72f7d391e31162, type: 2}
-  gameModeBehavioursLibrary: {fileID: 11400000, guid: 4c45143d7a01b9848a00e9ae04bf85c1,
-    type: 2}
---- !u!114 &114190096123114782
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1970294452618398}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55c2dbe88a7e3fa44ac0088b2942fb4a, type: 3}
+  m_Script: {fileID: 11500000, guid: 4ee3275d739b7e54d8f750b94f820ba7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   worldMap: {fileID: 11400000, guid: b8ea45c030b3de442bd0c749c02782ab, type: 2}
-  spriteRight: {fileID: 21300000, guid: 63935d0c6784db54ea79ec8822595f3a, type: 3}
-  spriteLeft: {fileID: 21300000, guid: 485c2b9d8ff0d0044a54bcb6af0c7e1f, type: 3}
-  spriteTop: {fileID: 21300000, guid: f93c1cd5c01742c41aff63f9a55a473b, type: 3}
-  spriteDown: {fileID: 21300000, guid: d1fb2db1fb69e4344833b7adbd37b62a, type: 3}
---- !u!114 &114516638323236096
+  moveColorOk: {r: 0, g: 1, b: 0, a: 0.5}
+  moveColorNOk: {r: 1, g: 0, b: 0, a: 0.5}
+--- !u!114 &114619691434909812
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1970294452618398}
+  m_GameObject: {fileID: 1331363568229740}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 959c526e84b01554593559f26adc683d, type: 3}
@@ -115,7 +98,7 @@ MonoBehaviour:
   Response:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114104834851023826}
+      - m_Target: {fileID: 114679606400004892}
         m_MethodName: EnableDisblaeGameModeRelatedComponent
         m_Mode: 1
         m_Arguments:
@@ -128,26 +111,26 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &114931459965092974
+--- !u!114 &114679606400004892
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1970294452618398}
+  m_GameObject: {fileID: 1331363568229740}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ee3275d739b7e54d8f750b94f820ba7, type: 3}
+  m_Script: {fileID: 11500000, guid: 4c409b7affc3955439ef71f3266ec992, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  worldMap: {fileID: 11400000, guid: b8ea45c030b3de442bd0c749c02782ab, type: 2}
-  moveColorOk: {r: 0, g: 1, b: 0, a: 0.5}
-  moveColorNOk: {r: 1, g: 0, b: 0, a: 0.5}
---- !u!212 &212530499542344230
+  gameMode: {fileID: 11400000, guid: b92ce93430f3b3841b72f7d391e31162, type: 2}
+  gameModeBehavioursLibrary: {fileID: 11400000, guid: 4c45143d7a01b9848a00e9ae04bf85c1,
+    type: 2}
+--- !u!212 &212856594016826152
 SpriteRenderer:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1970294452618398}
+  m_GameObject: {fileID: 1331363568229740}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -177,7 +160,7 @@ SpriteRenderer:
   m_SortingLayerID: 1570552089
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 63935d0c6784db54ea79ec8822595f3a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1f5345ffbfed741489f22e938f535bae, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

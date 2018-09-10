@@ -8,8 +8,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0f881d3975825d43908edae917521b4, type: 3}
-  m_Name: gameMode
+  m_Script: {fileID: 11500000, guid: 0014bcffb7d04db4bbc82fb5a9045d3d, type: 3}
+  m_Name: gameModeBehavioursLibrary
   m_EditorClassIdentifier: 
-  value: 2
-  Event: {fileID: 11400000, guid: 63a326f62f0da0448ac2b8578bf35b80, type: 2}
+  objectPlacement:
+  - Movable
+  - Rotable
+  playerControl:
+  - PlayerController
+  - Interactible

@@ -6,7 +6,7 @@ using static Utils;
 [RequireComponent(typeof(PathFindingManager))]
 public class PathFindingDebug : MonoBehaviour {
 
-    private Grid grid;
+    private PathfindingGrid grid;
 	public Color wallColor = Color.red;
 	public Color groundColor = Color.green;
 	public Color pathColor = Color.blue;
@@ -32,9 +32,9 @@ public class PathFindingDebug : MonoBehaviour {
 	
     public void OnDrawGizmos()
     {
-        if (grid!= null && grid.getNodes() != null)
+        if (grid!= null && grid.GetNodes() != null)
         {
-            foreach (Node node in grid.getNodes())
+            foreach (Node node in grid.GetNodes())
             {
                 if (node != null)
                 {

@@ -104,6 +104,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c409b7affc3955439ef71f3266ec992, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameMode: {fileID: 11400000, guid: b92ce93430f3b3841b72f7d391e31162, type: 2}
+  gameModeBehavioursLibrary: {fileID: 11400000, guid: 4c45143d7a01b9848a00e9ae04bf85c1,
+    type: 2}
 --- !u!114 &114731643650195658
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -118,7 +121,18 @@ MonoBehaviour:
   Event: {fileID: 11400000, guid: 63a326f62f0da0448ac2b8578bf35b80, type: 2}
   Response:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 114585299713167228}
+        m_MethodName: EnableDisblaeGameModeRelatedComponent
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &114843939333431632
