@@ -15,7 +15,6 @@ public class GameModeController : MonoBehaviour {
         ChangeGameMode(startingMode);
     }
 
-
     private void ChangeGameMode(GameMode.Type type)
     {
         gameMode.SetValue(type);

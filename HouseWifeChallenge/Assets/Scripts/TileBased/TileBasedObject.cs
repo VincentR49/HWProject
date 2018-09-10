@@ -8,7 +8,6 @@ using UnityEngine.Tilemaps;
 [RequireComponent(typeof(SpriteRenderer))]
 public abstract class TileBasedObject : MonoBehaviour
 {
-
     public TileMapVariable worldMap;
     protected BoxCollider2D Cd2D => GetComponent<BoxCollider2D>(); 
     protected float Width => sprite.bounds.size.x;
