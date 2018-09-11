@@ -4,10 +4,11 @@ using UnityEngine;
 
 // Track the information about the action state
 // TODO: private attributes ?
+[CreateAssetMenu(menuName ="Scriptable Objects/Actions/Action Tracker")]
 public class ActionTracker : ScriptableObject
 {
 	[Tooltip("Action currently running. Null if no action is running")]
-    Action action;
+    public Action action;
 	
 	[Tooltip("Current progress of the running action in second")]
 	public float currentProgress = 0;

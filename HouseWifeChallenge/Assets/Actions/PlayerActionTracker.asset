@@ -8,13 +8,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0014bcffb7d04db4bbc82fb5a9045d3d, type: 3}
-  m_Name: gameModeBehavioursLibrary
+  m_Script: {fileID: 11500000, guid: c9050c3a1b0863240a10b1705d612b99, type: 3}
+  m_Name: PlayerActionTracker
   m_EditorClassIdentifier: 
-  objectPlacement:
-  - Movable
-  - Rotable
-  playerControl:
-  - PlayerController
-  - Interactible
-  - ActionPerformer
+  action: {fileID: 0}
+  currentProgress: 0
+  performer: {fileID: 0}
+  interactible: {fileID: 0}

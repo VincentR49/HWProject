@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // Store the component scripts related to the given gameObject
-public class GameModeBehaviours : ScriptableObject {
+public class GameModeBehavioursLibrary : ScriptableObject {
 
     [SerializeField]
     [Tooltip("Component name specific to ObjectPlacement mode")]
@@ -16,17 +16,15 @@ public class GameModeBehaviours : ScriptableObject {
 	
 	private Type[] ObjectPlacementScripts => ConvertStringArrayToType (objectPlacement);
 	private Type[] PlayerControlScripts => ConvertStringArrayToType (playerControl);
-	
 
-	public Type[] GetTypes (GameMode.Type gameModeType)
-	{
-		switch (gameModeType)
-		{
-			case GameMode.Type.PlayerControl:   return PlayerControlScripts;
-			case GameMode.Type.ObjectPlacement: return ObjectPlacementScripts;
-			default:                            return null;
-		}
-	}
+    public Dictionary<GameMode.Type, Type[]> GetDictionary()
+    {
+        return new Dictionary<GameMode.Type, Type[]>
+        {
+            { GameMode.Type.PlayerControl, ConvertStringArrayToType (playerControl) },
+            { GameMode.Type.ObjectPlacement,  ConvertStringArrayToType(objectPlacement)  }
+        }; ;
+    }
 
     private static Type ConvertStringToType(String str)
     {
@@ -39,7 +37,15 @@ public class GameModeBehaviours : ScriptableObject {
         List<Type> types = new List<Type>();
         foreach (String str in strings)
         {
-            types.Add(ConvertStringToType(str));
+            Type type = ConvertStringToType(str);
+            if (type == null)
+            {
+                Debug.Log("Error: couldnt convert the string to type: " + str);
+            }
+            else
+            {
+                types.Add(type);
+            }
         }
         return types.ToArray();
     }

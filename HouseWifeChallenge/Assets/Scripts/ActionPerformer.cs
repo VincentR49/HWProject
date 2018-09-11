@@ -1,11 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.
 using static Utils;
 
 // Attach this to the player object in order to perform actions
-public class ActionPerfomer : MonoBehaviour
+public class ActionPerformer : MonoBehaviour
 {
 	[Tooltip("Reference to the object storing the information about the current action")]
 	public ActionTracker actionTracker; 
@@ -27,29 +26,26 @@ public class ActionPerfomer : MonoBehaviour
 		// TODO: to simplify (put inside function)
 		if (Input.GetMouseButtonDown(1))
 		{
-			GameObject interactiveObject = GetColliderAtPosition(To2D(Input.mousePosition)); 
+            Vector2 mousePosition = To2D(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+            GameObject interactiveObject = GetColliderAtPosition(mousePosition); 
 			if (interactiveObject != null)
 			{
-				Debug.Log("Clicked on object " + interactiveObject.name + " at position " + Input.mousePosition.ToString());
-				Interactible interactible = gameObject.GetComponent<Interactible>();
+				Debug.Log("Clicked on object " + interactiveObject.name + " at position " + mousePosition.ToString());
+				Interactible interactible = interactiveObject.GetComponent<Interactible>();
 				if (interactible != null)
 				{
 					// Check if an action is currently running
 					Action objectAction = interactible.action;
 					if (actionTracker.action == null) // no action is running
 					{
-						ExecuteAction (action, interactiveObject);
+						ExecuteAction (objectAction, interactiveObject);
 					}
 					else 
 					{
 						if (actionTracker.action != objectAction)
 						{
 							CancelAction (actionTracker.action, null); // reference to the object in interaction ??
-							ExecuteAction (action, interactiveObject);
-						}
-						else
-						{
-							// do nothing
+							ExecuteAction (objectAction, interactiveObject);
 						}
 					}
 				}
@@ -60,7 +56,7 @@ public class ActionPerfomer : MonoBehaviour
 	private void UpdateActionTracker()
 	{
 		actionTracker.currentProgress += Time.deltaTime;
-		if (actionTracker.currentProgress >= actionTracker.action)
+		if (actionTracker.currentProgress >= actionTracker.action.duration)
 		{
 			FinishAction(actionTracker.action, actionTracker.interactible);
 		}
@@ -75,7 +71,7 @@ public class ActionPerfomer : MonoBehaviour
 		actionTracker.interactible = interactiveObject;
 	}
 	
-	private void FinishAction(Action action)
+	private void FinishAction(Action action, GameObject interactiveObject)
 	{
 		action.Finish (gameObject, interactiveObject);
 		actionTracker.Reset();

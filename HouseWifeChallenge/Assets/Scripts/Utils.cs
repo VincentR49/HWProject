@@ -27,8 +27,17 @@ public static class Utils {
 
 	public static GameObject GetColliderAtPosition(Vector2 position)
 	{
-		RaycastHit hit = Physics2D.Raycast(position, -Vector2.up);
-		return hit.collider;
+		RaycastHit2D hit = Physics2D.Raycast(position, Vector2.down);
+        //Debug.DrawRay(position, Vector3.down, Color.green);
+        //Debug.Log("Cast Ray at position: " + position.ToString());
+        if (hit.collider != null)
+        {
+            return hit.collider.gameObject;
+        }
+        else
+        {
+            return null;
+        }
 	}
 	
 	public static Vector2 To2D(Vector3 vector)
