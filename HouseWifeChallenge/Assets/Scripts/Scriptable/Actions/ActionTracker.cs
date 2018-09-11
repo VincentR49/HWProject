@@ -6,7 +6,7 @@ using UnityEngine;
 // TODO: private attributes ?
 public class ActionTracker : ScriptableObject
 {
-	[Tooltip("Action currently running. Null if 
+	[Tooltip("Action currently running. Null if no action is running")]
     Action action;
 	
 	[Tooltip("Current progress of the running action in second")]
