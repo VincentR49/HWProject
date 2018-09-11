@@ -11,17 +11,17 @@ public class ActionPerfomer : MonoBehaviour
 	public ActionTracker actionTracker; 
 	private int lastUpdateTime;
 	
+	private void Start()
+	{
+		actionTracker.Reset();
+	}
+	
+	
 	private void Update()
 	{
-		Action currentAction = actionTracker.action;
-		
 		if (actionTracker.action != null)
 		{
-			actionTracker.currentProgress += Time.deltaTime;
-			if (actionTracker.currentProgress >= actionTracker.action)
-			{
-				FinishAction(currentAction, actionTracker.interactible);
-			}
+			UpdateActionTracker();
 		}
 
 		// TODO: to simplify (put inside function)
@@ -36,16 +36,16 @@ public class ActionPerfomer : MonoBehaviour
 				{
 					// Check if an action is currently running
 					Action objectAction = interactible.action;
-					
-					if (currentAction == null) // no action is running
+					if (actionTracker.action == null) // no action is running
 					{
 						ExecuteAction (action, interactiveObject);
 					}
 					else 
 					{
-						if (currentAction != objectAction)
+						if (actionTracker.action != objectAction)
 						{
-							CancelAction (currentAction, null); // reference to the object in interaction ??
+							CancelAction (actionTracker.action, null); // reference to the object in interaction ??
+							ExecuteAction (action, interactiveObject);
 						}
 						else
 						{
@@ -57,11 +57,22 @@ public class ActionPerfomer : MonoBehaviour
 		}
 	}
 	
+	private void UpdateActionTracker()
+	{
+		actionTracker.currentProgress += Time.deltaTime;
+		if (actionTracker.currentProgress >= actionTracker.action)
+		{
+			FinishAction(actionTracker.action, actionTracker.interactible);
+		}
+	}
+	
 	// Methods relative to action execution
 	private void ExecuteAction(Action action, GameObject interactiveObject)
 	{
 		action.Execute (gameObject, interactiveObject); 
-		actionTracker.isRunning = true;
+		actionTracker.action = action;
+		actionTracker.performer = gameObject;
+		actionTracker.interactible = interactiveObject;
 	}
 	
 	private void FinishAction(Action action)

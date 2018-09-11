@@ -10,14 +10,13 @@ public class ActionTracker : ScriptableObject
     Action action;
 	
 	[Tooltip("Current progress of the running action in second")]
-	public int currentProgress = 0;
+	public float currentProgress = 0;
 	
 	[Tooltip("Object performing the action (player)")]
 	public GameObject performer; 
 	
 	[Tooltip("Object with wich the performer interacts")]
 	public GameObject interactible;
-	
 	
 	public void OnEnable()
 	{
