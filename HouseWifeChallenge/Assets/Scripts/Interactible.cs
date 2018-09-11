@@ -2,17 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Attach this to any object that can ve interactible 
+// Action container
 public class Interactible : MonoBehaviour
 {
-    public Action action;
-
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+	public Action action;
 }

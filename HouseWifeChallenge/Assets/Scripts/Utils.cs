@@ -24,5 +24,15 @@ public static class Utils {
 			self.Add(item);
 		}
 	}
+
+	public static GameObject GetColliderAtPosition(Vector2 position)
+	{
+		RaycastHit hit = Physics2D.Raycast(position, -Vector2.up);
+		return hit.collider;
+	}
 	
+	public static Vector2 To2D(Vector3 vector)
+	{
+		return new Vector2 (vector.x, vector.y);
+	}
 }
