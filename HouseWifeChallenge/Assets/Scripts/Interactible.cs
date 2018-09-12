@@ -13,7 +13,7 @@ public class Interactible : MonoBehaviour
 	{
 		if (interactibleObjectList != null)
 		{
-			interactibleObjectList.Add(this);
+			interactibleObjectList.Add(gameObject);
 		}
 	}
 	
@@ -21,7 +21,7 @@ public class Interactible : MonoBehaviour
 	{
 		if (interactibleObjectList != null)
 		{
-			interactibleObjectList.Remove(this);
+			interactibleObjectList.Remove(gameObject);
 		}
 	}
 }

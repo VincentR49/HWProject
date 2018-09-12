@@ -26,25 +26,25 @@ public class ActionPerformerAI : ActionPerformer
 	
 	private void Update()
 	{
-		if (!actionTracker.action != null !isBusy)
+		if (actionTracker.action != null && !isBusy)
 		{
 			
 		}
 	}
 	
-	private override void ExecuteAction (Action action, GameObject interactiveObject)
+	protected override void ExecuteAction (Action action, GameObject interactiveObject)
 	{
 		base.ExecuteAction (action, interactiveObject);
 		// TODO à spécifier
 	}
-	
-	private override void FinishAction (Action action, GameObject interactiveObject)
+
+    protected override void FinishAction (Action action, GameObject interactiveObject)
 	{
 		base.FinishAction (action, interactiveObject);
 		// TODO à spécifier
 	}
-	
-	private override void CancelAction (Action action, GameObject interactiveObject)
+
+    protected override void CancelAction (Action action, GameObject interactiveObject)
 	{
 		base.CancelAction (action, interactiveObject);
 		// TODO à spécifier

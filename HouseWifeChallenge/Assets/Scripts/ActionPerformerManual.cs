@@ -20,10 +20,11 @@ public class ActionPerformerManual : ActionPerformer
 		
 		if (Input.GetMouseButtonDown(1))
 		{
+            Vector2 mousePosition = To2D(Camera.main.ScreenToWorldPoint(Input.mousePosition));
             GameObject interactiveObject = GetInteractiveObjectAtPosition(mousePosition);
 			if (interactiveObject != null)
 			{
-				StartAction(interactiveObject.GetComponent<Interactible>().action);
+				StartAction(interactiveObject.GetComponent<Interactible>().action, interactiveObject);
 			}
 		}
 	}

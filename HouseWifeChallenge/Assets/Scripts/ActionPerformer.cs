@@ -10,7 +10,7 @@ public abstract class ActionPerformer : MonoBehaviour
 	public ActionTracker actionTracker; 
 	
 	// Execute the action. Cancel current action if one acion is currently running and is different from the given action.
-	public void StartAction(Action action)
+	public void StartAction(Action action, GameObject interactiveObject)
 	{
 		if (action == null) return;
 		if (actionTracker.action == null) // no action is running
