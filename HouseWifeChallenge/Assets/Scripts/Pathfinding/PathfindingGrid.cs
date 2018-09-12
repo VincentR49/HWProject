@@ -175,11 +175,4 @@ public class PathfindingGrid : ScriptableObject {
     {
         return nodes;
     }
-
-    public Node GetClosestFreeNodeFromPos(Vector2 worldPos)
-    {
-        Node closestNode = null;
-        // à développer
-        return closestNode;
-    }
 }

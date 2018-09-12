@@ -7,4 +7,21 @@ using UnityEngine;
 public class Interactible : MonoBehaviour
 {
 	public Action action;
+	public GameObjectSet interactibleObjectList;
+	
+	public void Start()
+	{
+		if (interactibleObjectList != null)
+		{
+			interactibleObjectList.Add(this);
+		}
+	}
+	
+	public void OnDestroy()
+	{
+		if (interactibleObjectList != null)
+		{
+			interactibleObjectList.Remove(this);
+		}
+	}
 }

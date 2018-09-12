@@ -6,6 +6,8 @@ public abstract class Action : ScriptableObject
 {
     public new string name;
     public string description;
+	
+	[Tooltip("Icon appearing while performing the action")]
     public Sprite icon;
 	
 	[Tooltip("Action duration in second")]

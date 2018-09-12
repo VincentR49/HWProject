@@ -123,5 +123,4 @@ public class PathFindingManager : MonoBehaviour {
 	{
 		return currentPath;
 	}
-	
 }

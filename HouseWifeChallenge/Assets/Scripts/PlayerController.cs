@@ -8,7 +8,11 @@ using static Utils;
 public class PlayerController : MonoBehaviour {
 
     public float speed;
-    private Rigidbody2D rb2d;
+	
+    [Tooltip("Enable / Disable the manual deplacement of the character by clicking on the place to move")]
+	public bool manualMode = true;
+	
+	private Rigidbody2D rb2d;
     Vector2 playerMove = Vector2.zero;
 	
 	// Pathfing related attributes
@@ -28,7 +32,7 @@ public class PlayerController : MonoBehaviour {
     {
 		playerMove = Vector2.zero; // reset each time
 		
-		if (Input.GetMouseButtonDown(0)) // moving to the mouse position
+		if (Input.GetMouseButtonDown(0) && manualMode) // moving to the mouse position
 		{ 
 			Vector3 mousePositon = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 			Vector2 targetPos = new Vector2(mousePositon.x, mousePositon.y);

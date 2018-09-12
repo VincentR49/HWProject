@@ -3,57 +3,32 @@ using System.Collections.Generic;
 using UnityEngine;
 using static Utils;
 
-// Attach this to the player object in order to perform actions
-public class ActionPerformer : MonoBehaviour
+// Abstract class defining the basics methods to interract with interactible objects
+public abstract class ActionPerformer : MonoBehaviour
 {
 	[Tooltip("Reference to the object storing the information about the current action")]
 	public ActionTracker actionTracker; 
-	private int lastUpdateTime;
 	
-	private void Start()
+	// Execute the action. Cancel current action if one acion is currently running and is different from the given action.
+	public void StartAction(Action action)
 	{
-		actionTracker.Reset();
-	}
-	
-	
-	private void Update()
-	{
-		if (actionTracker.action != null)
+		if (action == null) return;
+		if (actionTracker.action == null) // no action is running
 		{
-			UpdateActionTracker();
+			ExecuteAction (action, interactiveObject);
 		}
-
-		// TODO: to simplify (put inside function)
-		if (Input.GetMouseButtonDown(1))
+		else 
 		{
-            Vector2 mousePosition = To2D(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-            GameObject interactiveObject = GetColliderAtPosition(mousePosition); 
-			if (interactiveObject != null)
+			if (actionTracker.action != action)
 			{
-				Debug.Log("Clicked on object " + interactiveObject.name + " at position " + mousePosition.ToString());
-				Interactible interactible = interactiveObject.GetComponent<Interactible>();
-				if (interactible != null)
-				{
-					// Check if an action is currently running
-					Action objectAction = interactible.action;
-					if (actionTracker.action == null) // no action is running
-					{
-						ExecuteAction (objectAction, interactiveObject);
-					}
-					else 
-					{
-						if (actionTracker.action != objectAction)
-						{
-							CancelAction (actionTracker.action, null); // reference to the object in interaction ??
-							ExecuteAction (objectAction, interactiveObject);
-						}
-					}
-				}
+				CancelAction (actionTracker.action, null); // reference to the object in interaction ??
+				ExecuteAction (action, interactiveObject);
 			}
 		}
 	}
 	
-	private void UpdateActionTracker()
+	// Update the current progress of the action and finish the action if necessary
+	protected void UpdateActionTracker()
 	{
 		actionTracker.currentProgress += Time.deltaTime;
 		if (actionTracker.currentProgress >= actionTracker.action.duration)
@@ -61,9 +36,8 @@ public class ActionPerformer : MonoBehaviour
 			FinishAction(actionTracker.action, actionTracker.interactible);
 		}
 	}
-	
-	// Methods relative to action execution
-	private void ExecuteAction(Action action, GameObject interactiveObject)
+
+	protected virtual void ExecuteAction(Action action, GameObject interactiveObject)
 	{
 		action.Execute (gameObject, interactiveObject); 
 		actionTracker.action = action;
@@ -71,13 +45,13 @@ public class ActionPerformer : MonoBehaviour
 		actionTracker.interactible = interactiveObject;
 	}
 	
-	private void FinishAction(Action action, GameObject interactiveObject)
+	protected virtual void FinishAction(Action action, GameObject interactiveObject)
 	{
 		action.Finish (gameObject, interactiveObject);
 		actionTracker.Reset();
 	}
 	
-	private void CancelAction(Action action, GameObject interactiveObject)
+	protected virtual void CancelAction(Action action, GameObject interactiveObject)
 	{
 		action.Cancel (gameObject, interactiveObject);
 		actionTracker.Reset();
