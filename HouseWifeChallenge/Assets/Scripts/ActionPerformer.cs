@@ -7,9 +7,10 @@ using static Utils;
 public abstract class ActionPerformer : MonoBehaviour
 {
 	[Tooltip("Reference to the object storing the information about the current action")]
-	public ActionTracker actionTracker; 
-	public static int minInteractionDistance = 1,
-	
+	public ActionTracker actionTracker;
+
+    [Tooltip("Distance minimal from the object and performer to be able to interact")]
+    public double minInteractionDistance = 1.3;
 	
 	// Execute the action. Cancel current action if one acion is currently running and is different from the given action.
 	public void StartAction(Action action, GameObject interactiveObject)
@@ -23,7 +24,7 @@ public abstract class ActionPerformer : MonoBehaviour
 		{
 			if (actionTracker.action != action)
 			{
-				CancelAction (actionTracker.action, null); // reference to the object in interaction ??
+				CancelAction (actionTracker.action, actionTracker.performer); // reference to the object in interaction ??
 				ExecuteAction (action, interactiveObject);
 			}
 		}
@@ -45,9 +46,19 @@ public abstract class ActionPerformer : MonoBehaviour
 		}
 	}
 	
+    // Check if the current game object is close enough from the interactible object
 	protected bool IsCloseEnough (GameObject interactiveObject)
 	{
-		return GetDistance (To2D(transform.position), To2D(interactiveObject.transform.position)) <= minInteractionDistance;
+        float radius = (float)minInteractionDistance / 2;
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, radius);
+        foreach (Collider2D collider in colliders)
+        {
+            if (collider.gameObject == interactiveObject)
+            {
+                return true;
+            }
+        }
+        return false;
 	}
 
 	// Update the current progress of the action and finish the action if necessary
@@ -56,7 +67,7 @@ public abstract class ActionPerformer : MonoBehaviour
 		actionTracker.progress += Time.deltaTime;
 		if (actionTracker.progress >= actionTracker.action.duration)
 		{
-			FinishAction(actionTracker.action, actionTracker.interactible);
+            FinishAction(actionTracker.action, actionTracker.interactible);
 		}
 	}
 
@@ -67,12 +78,13 @@ public abstract class ActionPerformer : MonoBehaviour
 		actionTracker.performer = gameObject;
 		actionTracker.interactible = interactiveObject;
 		actionTracker.progress = 0;
+        actionTracker.status = IsCloseEnough(interactiveObject) ? ActionTracker.Status.Running : ActionTracker.Status.Waiting;
 	}
 	
 	protected virtual void FinishAction(Action action, GameObject interactiveObject)
 	{
 		action.Finish (gameObject, interactiveObject);
-		actionTracker.status = Status.Finished;
+		actionTracker.status = ActionTracker.Status.Finished;
 		actionTracker.progress = action.duration;
 	}
 	
@@ -80,6 +92,6 @@ public abstract class ActionPerformer : MonoBehaviour
 	{
 		action.Cancel (gameObject, interactiveObject);
 		actionTracker.progress = 0;
-		actionTracker.status = Status.Waiting;
+		actionTracker.status = ActionTracker.Status.Waiting;
 	}
 }

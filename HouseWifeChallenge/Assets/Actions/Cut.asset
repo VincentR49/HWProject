@@ -8,10 +8,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9050c3a1b0863240a10b1705d612b99, type: 3}
-  m_Name: PlayerActionTracker
+  m_Script: {fileID: 11500000, guid: 44ce08ba521389a48b2931d1cf197270, type: 3}
+  m_Name: Cut
   m_EditorClassIdentifier: 
-  action: {fileID: 0}
-  currentProgress: 0
-  performer: {fileID: 0}
-  interactible: {fileID: 0}
+  name: Cut
+  description: 
+  icon: {fileID: 0}
+  duration: 5

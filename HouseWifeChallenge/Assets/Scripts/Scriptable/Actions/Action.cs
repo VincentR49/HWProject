@@ -11,6 +11,7 @@ public abstract class Action : ScriptableObject
     public Sprite icon;
 	
 	[Tooltip("Action duration in second")]
+    [Range(0,5)]
     public float duration;
 	
     public abstract bool Execute(GameObject player, GameObject interactibleObject);

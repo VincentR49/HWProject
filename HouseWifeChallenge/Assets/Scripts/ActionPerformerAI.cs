@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,26 +29,20 @@ public class ActionPerformerAI : ActionPerformer
 	
 	private void Update()
 	{
-		// TODO: à spécifier
-		// Si not busy et que la liste d'action en cours et non vide
-		// on Sélectionne la première action de la liste comme action en cours
-		// On détecte le plus proche object permettant de faire l'action
-		// On se déplace vers cet objet
-		// On execute l'action
-		// Une fois l'action terminée, on l'enlève de la liste
-		if (!busy && actionList.Count > 0)
+        UpdateCurrentActionState();
+        // TODO: à spécifier
+        // Si not busy et que la liste d'action en cours et non vide
+        // on Sélectionne la première action de la liste comme action en cours
+        // On détecte le plus proche object permettant de faire l'action
+        // On se déplace vers cet objet
+        // On execute l'action
+        // Une fois l'action terminée, on l'enlève de la liste
+        if (!busy && actionList.Items.Count > 0)
 		{
 		
 		
 		}
-		
-		
-		
-		if (actionTracker.action != null)
-		{
-			UpdateActionTracker();
-		}
-	}
+    }
 	
 	protected override void ExecuteAction (Action action, GameObject interactiveObject)
 	{
@@ -74,7 +69,7 @@ public class ActionPerformerAI : ActionPerformer
 		double minDistance = Double.MaxValue;
 		foreach (GameObject go in gameObjects)
 		{
-			double distance = GetDistance(To2D(tranform.position), To2D(go.transform.position));
+			double distance = GetDistance(To2D(transform.position), To2D(go.transform.position));
 			if (distance < minDistance)
 			{
 				closestObject = go;
@@ -87,16 +82,16 @@ public class ActionPerformerAI : ActionPerformer
 	// Detect in the map the interactible objects containing the given action
 	private GameObject[] GetInteractibleObjects (Action action)
 	{
-		if (interactibleObjects == null) return null;
+		if (interactibleObjects.Items == null) return null;
 		List<GameObject> gameObjects = new List<GameObject>();
-		foreach (GameObject obj in interactibleObjects)
+		foreach (GameObject obj in interactibleObjects.Items)
 		{
 			Interactible interactible = obj.GetComponent<Interactible>();
 			if (interactible != null)
 			{
 				if (interactible.action == action)
 				{
-					gamesObjects.Add(obj);
+                    gameObjects.Add(obj);
 				}
 			}
 			else

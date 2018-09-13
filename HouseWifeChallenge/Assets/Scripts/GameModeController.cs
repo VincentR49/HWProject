@@ -9,11 +9,25 @@ public class GameModeController : MonoBehaviour {
 
     public GameMode.Type startingMode;
     public GameMode gameMode;
+    public String playerControlKey = "p";
+    public String objectPlacementKey = "o";
 
-    // Use this for initialization
     void Start () {
         ChangeGameMode(startingMode);
     }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(playerControlKey))
+        {
+            ChangeGameMode(GameMode.Type.PlayerControl);
+        }
+        if (Input.GetKeyDown(objectPlacementKey))
+        {
+            ChangeGameMode(GameMode.Type.ObjectPlacement);
+        }
+    }
+
 
     private void ChangeGameMode(GameMode.Type type)
     {

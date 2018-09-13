@@ -13,6 +13,7 @@ public class Interactible : MonoBehaviour
 	{
 		if (interactibleObjectList != null)
 		{
+            Debug.Log("Object (" + name + ") added to interactible object list (" + interactibleObjectList.name + ")");
 			interactibleObjectList.Add(gameObject);
 		}
 	}
@@ -21,7 +22,8 @@ public class Interactible : MonoBehaviour
 	{
 		if (interactibleObjectList != null)
 		{
-			interactibleObjectList.Remove(gameObject);
+            Debug.Log("Object (" + name + ") removed from interactible object list (" + interactibleObjectList.name + ")");
+            interactibleObjectList.Remove(gameObject);
 		}
 	}
 }

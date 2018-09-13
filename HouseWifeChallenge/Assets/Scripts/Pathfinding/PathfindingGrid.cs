@@ -79,7 +79,7 @@ public class PathfindingGrid : ScriptableObject {
         Collider2D[] colliders = Physics2D.OverlapCircleAll(pos, CellSize / 8);
         if (colliders.Length > 0)
         {
-            Debug.Log("Found Colliders");
+            //Debug.Log("Found Colliders");
         }
         return colliders.Length > 0;
     }

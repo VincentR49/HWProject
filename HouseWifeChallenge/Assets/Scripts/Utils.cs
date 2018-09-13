@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -49,4 +50,11 @@ public static class Utils {
 	{
 		return Math.Sqrt (Math.Pow (pos1.x - pos2.x, 2) + Math.Pow (pos1.y - pos2.y, 2));
 	}
+
+    public static double Round(double value, int n)
+    {
+        double factor = Math.Pow(10, n);
+        return Math.Round(value * factor) / factor;
+    }
+
 }

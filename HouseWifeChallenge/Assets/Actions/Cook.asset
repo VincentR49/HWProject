@@ -9,9 +9,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: eeebdad01a4d536468fad38ca8588d4c, type: 3}
-  m_Name: CookingPasta
+  m_Name: Cook
   m_EditorClassIdentifier: 
-  name: Cooking pasta
+  name: Cook
   description: 
   icon: {fileID: 0}
-  duration: 2
+  duration: 2.39

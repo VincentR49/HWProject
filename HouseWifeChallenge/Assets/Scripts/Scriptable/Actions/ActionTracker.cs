@@ -31,7 +31,7 @@ public class ActionTracker : ScriptableObject
 	
 	public bool ActionIsRunning()
 	{
-		return action != null && action.Status == Status.Running;
+		return action != null && status == Status.Running;
 	}
 }
 

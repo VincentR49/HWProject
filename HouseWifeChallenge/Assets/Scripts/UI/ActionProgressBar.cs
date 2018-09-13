@@ -19,10 +19,10 @@ public class ActionProgressBar : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        if (actionTraker.action != null)
+        if (actionTraker.ActionIsRunning())
         {
             Show();
-            progressBar.fillAmount = actionTraker.currentProgress / actionTraker.action.duration;
+            progressBar.fillAmount = actionTraker.progress / actionTraker.action.duration;
             progressBar.transform.parent.transform.position = actionTraker.interactible.transform.position + Vector3.right * offsetX + Vector3.up * offsetY;
         }
         else

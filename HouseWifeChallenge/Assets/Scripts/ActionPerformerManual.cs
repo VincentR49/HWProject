@@ -6,19 +6,12 @@ using static Utils;
 // Attach this to the player object in order to perform actions manually by clicking on the object
 public class ActionPerformerManual : ActionPerformer
 {
-	private void Start()
-	{
-		actionTracker.Reset();
-	}
 
 	private void Update()
 	{
-		if (actionTracker.action != null)
-		{
-			UpdateActionTracker();
-		}
-		
-		if (Input.GetMouseButtonDown(1))
+        UpdateCurrentActionState();
+
+        if (Input.GetMouseButtonDown(1))
 		{
             Vector2 mousePosition = To2D(Camera.main.ScreenToWorldPoint(Input.mousePosition));
             GameObject interactiveObject = GetInteractiveObjectAtPosition(mousePosition);
