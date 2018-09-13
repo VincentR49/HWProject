@@ -11,7 +11,7 @@ public class ActionTracker : ScriptableObject
     public Action action;
 	
 	[Tooltip("Current progress of the running action in second")]
-	public float currentProgress = 0;
+	public float progress = 0;
 	
 	[Tooltip("Object performing the action (player)")]
 	public GameObject performer; 
@@ -19,17 +19,19 @@ public class ActionTracker : ScriptableObject
 	[Tooltip("Object with wich the performer interacts")]
 	public GameObject interactible;
 	
-	public void OnEnable()
+	[Tooltip("Current Status of the action")]
+	public Status status;
+	
+	public enum Status
 	{
-		Reset();
+		Waiting,
+		Running,
+		Finished
 	}
 	
-	public void Reset()
-	{	
-		action = null;
-		currentProgress = 0;
-		performer = null;
-		interactible = null;
+	public bool ActionIsRunning()
+	{
+		return action != null && action.Status == Status.Running;
 	}
 }
 

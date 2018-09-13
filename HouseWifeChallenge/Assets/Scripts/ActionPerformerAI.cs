@@ -5,9 +5,9 @@ using static Utils;
 
 // Attach this to the player object in order to perform actions automatically from a given list
 [RequireComponent(typeof(PlayerController))]
+[RequireComponent(typeof(PathFindingManager))]
 public class ActionPerformerAI : ActionPerformer
 {
-
 	// Note: has reference to ActionTracker by heritage
 	
 	[Tooltip("List of task to perform")]
@@ -17,7 +17,9 @@ public class ActionPerformerAI : ActionPerformer
 	public GameObjectSet interactibleObjects;
 	
 	PlayerController playerController;
-	bool isBusy = false;
+	bool busy = false;
+	private Action currentAction;
+	
 	
 	private void Start()
 	{
@@ -26,9 +28,24 @@ public class ActionPerformerAI : ActionPerformer
 	
 	private void Update()
 	{
-		if (actionTracker.action != null && !isBusy)
+		// TODO: à spécifier
+		// Si not busy et que la liste d'action en cours et non vide
+		// on Sélectionne la première action de la liste comme action en cours
+		// On détecte le plus proche object permettant de faire l'action
+		// On se déplace vers cet objet
+		// On execute l'action
+		// Une fois l'action terminée, on l'enlève de la liste
+		if (!busy && actionList.Count > 0)
 		{
-			
+		
+		
+		}
+		
+		
+		
+		if (actionTracker.action != null)
+		{
+			UpdateActionTracker();
 		}
 	}
 	
@@ -48,5 +65,45 @@ public class ActionPerformerAI : ActionPerformer
 	{
 		base.CancelAction (action, interactiveObject);
 		// TODO à spécifier
+	}
+	
+	
+	private GameObject GetClosestObject (GameObject[] gameObjects)
+	{
+		GameObject closestObject = null;
+		double minDistance = Double.MaxValue;
+		foreach (GameObject go in gameObjects)
+		{
+			double distance = GetDistance(To2D(tranform.position), To2D(go.transform.position));
+			if (distance < minDistance)
+			{
+				closestObject = go;
+				minDistance = distance;
+			}
+		}
+		return closestObject;
+	}
+	
+	// Detect in the map the interactible objects containing the given action
+	private GameObject[] GetInteractibleObjects (Action action)
+	{
+		if (interactibleObjects == null) return null;
+		List<GameObject> gameObjects = new List<GameObject>();
+		foreach (GameObject obj in interactibleObjects)
+		{
+			Interactible interactible = obj.GetComponent<Interactible>();
+			if (interactible != null)
+			{
+				if (interactible.action == action)
+				{
+					gamesObjects.Add(obj);
+				}
+			}
+			else
+			{
+				Debug.Log("Error: non interactible detected in the interactible object list.");
+			}
+		}
+		return gameObjects.ToArray();
 	}
 }

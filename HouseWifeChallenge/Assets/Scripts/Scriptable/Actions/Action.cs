@@ -12,7 +12,7 @@ public abstract class Action : ScriptableObject
 	
 	[Tooltip("Action duration in second")]
     public float duration;
-
+	
     public abstract bool Execute(GameObject player, GameObject interactibleObject);
 	public abstract bool Cancel(GameObject player, GameObject interactibleObject);
 	public abstract bool Finish(GameObject player, GameObject interactibleObject);

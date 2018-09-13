@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class Utils {
 
-	public static float GetNorm2(Vector2 vector)
+	public static double GetNorm2(Vector2 vector)
     {
         return Mathf.Sqrt (Mathf.Pow (vector.x, 2) + Mathf.Pow (vector.y, 2));
     }
@@ -43,5 +43,10 @@ public static class Utils {
 	public static Vector2 To2D(Vector3 vector)
 	{
 		return new Vector2 (vector.x, vector.y);
+	}
+	
+	public static double GetDistance(Vector2 pos1, Vector2 pos2)
+	{
+		return Math.Sqrt (Math.Pow (pos1.x - pos2.x, 2) + Math.Pow (pos1.y - pos2.y, 2));
 	}
 }
