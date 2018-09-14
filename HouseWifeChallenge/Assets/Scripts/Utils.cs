@@ -57,4 +57,16 @@ public static class Utils {
         return Math.Round(value * factor) / factor;
     }
 
+    public static bool Overlaps(this RectTransform rectTrans1, RectTransform rectTrans2, bool worldPosition)
+    {
+        float x1 = worldPosition ? rectTrans1.position.x : rectTrans1.localPosition.x;
+        float x2 = worldPosition ? rectTrans2.position.x : rectTrans2.localPosition.x;
+        float y1 = worldPosition ? rectTrans1.position.y : rectTrans1.localPosition.y;
+        float y2 = worldPosition ? rectTrans2.position.y : rectTrans2.localPosition.y;
+
+        Rect rect1 = new Rect(x1, y1, rectTrans1.rect.width, rectTrans1.rect.height);
+        Rect rect2 = new Rect(x2, y2, rectTrans2.rect.width, rectTrans2.rect.height);
+
+        return rect1.Overlaps(rect2);
+    }
 }

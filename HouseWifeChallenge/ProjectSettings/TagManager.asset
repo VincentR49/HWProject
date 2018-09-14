@@ -53,3 +53,6 @@ TagManager:
   - name: UI
     uniqueID: 708703657
     locked: 0
+  - name: DragUI
+    uniqueID: 1198210109
+    locked: 0
