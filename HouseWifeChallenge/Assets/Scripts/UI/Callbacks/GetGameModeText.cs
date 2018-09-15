@@ -16,16 +16,6 @@ public class GetGameModeText : MonoBehaviour {
 
     public void UpdateText()
     {
-        string textToShow = "None";
-        switch(gameMode.GetValue())
-        {
-            case GameMode.Type.PlayerControl:
-                textToShow = "Player Controller";
-                break;
-            case GameMode.Type.ObjectPlacement:
-                textToShow = "Object Placement";
-                break;
-        }
-        text.text = textToShow;
+        text.text = gameMode.GetValue().GetString();
     }
 }

@@ -11,18 +11,24 @@ public class GameModeBehavioursLibrary : ScriptableObject {
 	private string[] objectPlacement;
 
     [SerializeField]
-    [Tooltip("Component name specific to PlayerControl mode")]
+    [Tooltip("Component name specific to PlayerControl manual mode")]
 	private string[] playerControl;
-	
-	private Type[] ObjectPlacementScripts => ConvertStringArrayToType (objectPlacement);
-	private Type[] PlayerControlScripts => ConvertStringArrayToType (playerControl);
 
-    public Dictionary<GameMode.Type, Type[]> GetDictionary()
+    [SerializeField]
+    [Tooltip("Component name specific to PlayerControl AI mode")]
+    private string[] playerControlAI;
+
+    private Type[] ObjectPlacementScripts => ConvertStringArrayToType (objectPlacement);
+	private Type[] PlayerControlScripts => ConvertStringArrayToType (playerControl);
+    private Type[] PlayerControlAIScripts => ConvertStringArrayToType(playerControlAI);
+
+    public Dictionary<GameModeType, Type[]> GetDictionary()
     {
-        return new Dictionary<GameMode.Type, Type[]>
+        return new Dictionary<GameModeType, Type[]>
         {
-            { GameMode.Type.PlayerControl, ConvertStringArrayToType (playerControl) },
-            { GameMode.Type.ObjectPlacement,  ConvertStringArrayToType(objectPlacement)  }
+            { GameModeType.PlayerControl, ConvertStringArrayToType (playerControl) },
+            { GameModeType.ObjectPlacement,  ConvertStringArrayToType(objectPlacement)  },
+            { GameModeType.PlayerControlAI,  ConvertStringArrayToType(playerControlAI)  }
         }; ;
     }
 

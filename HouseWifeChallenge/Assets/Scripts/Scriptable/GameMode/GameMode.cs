@@ -5,16 +5,9 @@ using UnityEngine;
 [CreateAssetMenu (menuName ="Scriptable Objects/Game Mode")]
 public class GameMode : ScriptableObject {
 
-    public enum Type
-    {
-        None,
-        PlayerControl,
-        ObjectPlacement
-    }
-
     [Tooltip("Current game mode")]
     [SerializeField]
-    private Type value;
+    private GameModeType value;
     
     [Tooltip("Event to raise when value changed")]
     public GameEvent Event;
@@ -25,14 +18,14 @@ public class GameMode : ScriptableObject {
         Event.Raise();
     }
 
-    public void SetValue (Type value)
+    public void SetValue (GameModeType value)
     {
         Debug.Log("Set new game mode");
         this.value = value;
         Event.Raise();
     }
 
-    public Type GetValue()
+    public GameModeType GetValue()
     {
         return value;
     }

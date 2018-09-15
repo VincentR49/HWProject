@@ -7,29 +7,46 @@ using UnityEngine.Events;
 // Class that enable / disable scripts related to the game mode
 public class GameModeController : MonoBehaviour {
 
-    public GameMode.Type startingMode;
-    public GameMode gameMode;
+    public GameModeType startingMode;
+
+    [Tooltip("Reference to the current game mode")]
+    public GameMode gameMode; 
+
+    public String noneModeKey = "l";
     public String playerControlKey = "p";
+    public String playerControlAIKey = "m";
     public String objectPlacementKey = "o";
+
+    private Dictionary<GameModeType, String> dictionaryKeyGameMode;
 
     void Start () {
         ChangeGameMode(startingMode);
+        InitKeyDictionary();
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(playerControlKey))
+        foreach (KeyValuePair<GameModeType, String> entry in dictionaryKeyGameMode)
         {
-            ChangeGameMode(GameMode.Type.PlayerControl);
-        }
-        if (Input.GetKeyDown(objectPlacementKey))
-        {
-            ChangeGameMode(GameMode.Type.ObjectPlacement);
+            if (Input.GetKeyDown(entry.Value))
+            {
+                ChangeGameMode(entry.Key);
+            }
         }
     }
 
+    private void InitKeyDictionary()
+    {
+        dictionaryKeyGameMode = new Dictionary<GameModeType, string>
+        {
+            { GameModeType.None,  noneModeKey},
+            { GameModeType.PlayerControl,  playerControlKey},
+            { GameModeType.PlayerControlAI,  playerControlAIKey},
+            { GameModeType.ObjectPlacement,  objectPlacementKey}
+        };
+    }
 
-    private void ChangeGameMode(GameMode.Type type)
+    private void ChangeGameMode(GameModeType type)
     {
         gameMode.SetValue(type);
     }

@@ -118,7 +118,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   action: {fileID: 11400000, guid: 6335f0e4f01473740a65d1047624bfe7, type: 2}
   dragColor: {r: 1, g: 0, b: 0, a: 1}
-  dragEndEvent: {fileID: 11400000, guid: 6cd7f75142f504949a3bb99d5dd0ef30, type: 2}
 --- !u!222 &222192918389161046
 CanvasRenderer:
   m_ObjectHideFlags: 1

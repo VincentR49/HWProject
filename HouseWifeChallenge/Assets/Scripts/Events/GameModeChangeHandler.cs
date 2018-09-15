@@ -16,16 +16,17 @@ public class GameModeChangeHandler : MonoBehaviour {
     // to simplify ...
     public void EnableDisblaeGameModeRelatedComponent()
 	{
-        Dictionary<GameMode.Type, Type[]> dict = gameModeBehavioursLibrary.GetDictionary();
-        foreach (KeyValuePair<GameMode.Type, Type[]> entry in dict)
+        Dictionary<GameModeType, Type[]> dict = gameModeBehavioursLibrary.GetDictionary();
+        Type[] behavioursToEnable = dict.ContainsKey(gameMode.GetValue()) ? dict[gameMode.GetValue()] : null;
+        foreach (KeyValuePair<GameModeType, Type[]> entry in dict)
         {
-            bool enable = gameMode.GetValue() == entry.Key;
             Type[] types = entry.Value;
             if (types == null) continue;
             foreach (Type type in types)
             {
                 if (type != null && type.IsSubclassOf(typeof(MonoBehaviour)))
                 {
+                    bool enable = behavioursToEnable != null && Array.IndexOf(behavioursToEnable, type) > -1;
                     MonoBehaviour component = GetComponent(type) as MonoBehaviour;
                     if (component != null)
                     {
