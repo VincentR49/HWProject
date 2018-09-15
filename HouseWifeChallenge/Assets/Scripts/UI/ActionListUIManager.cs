@@ -3,30 +3,34 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+// Manage the Action list UI panel
+// In charge displaying and editing the actions ToDoList
 public class ActionListUIManager : MonoBehaviour {
 
     public ActionSet toDoList;
     public ActionTracker currentTracker;
     public GameEvent toDoListChanged;
-
-    public Color currentActionColor = Color.yellow;
-    public Color toDoColor = Color.cyan;
-
     public GameObject actionListElementPrefab;
+    public Color dropColor = Color.cyan;
+
 
     private List<GameObject> uiElements;
     private List<GameObject> placeHolders;
     private ActionSet lastToList;
+    private GameObject tempDragContainer;
 
     void OnEnable()
     {
-        ActionListDraggableElement.OnDragEnd += OnListElementDragEnd;
+        ActionListDraggableElement.DragBeginEventDelegate += OnListElementDragBegin;
+        ActionListDraggableElement.DragEventDelegate += OnListElementDrag;
+        ActionListDraggableElement.DragEndEventDelegate += OnListElementDragEnd;
     }
-
 
     void OnDisable()
     {
-        ActionListDraggableElement.OnDragEnd -= OnListElementDragEnd;
+        ActionListDraggableElement.DragBeginEventDelegate -= OnListElementDragBegin;
+        ActionListDraggableElement.DragEventDelegate -= OnListElementDrag;
+        ActionListDraggableElement.DragEndEventDelegate -= OnListElementDragEnd;
     }
 
     private void Start()
@@ -35,38 +39,94 @@ public class ActionListUIManager : MonoBehaviour {
         UpdateTaskListUI();
     }
 
+    // Create an empty object at the end of the children tree hierarchy, to be visible over all the other elements
+    private void CreateTempDragContainer()
+    {
+        DestroyTempDragContainer(); // to be sure
+        Debug.Log("Create drag element container");
+        tempDragContainer = new GameObject("Temp Drag Container");
+        tempDragContainer.transform.parent = gameObject.transform;
+        tempDragContainer.transform.SetAsLastSibling(); 
+    }
+
+    private void DestroyTempDragContainer()
+    {
+        Debug.Log("Destroy drag element container");
+        if (tempDragContainer != null)
+        {
+            Destroy(tempDragContainer);
+        }
+    }
+
+    void OnListElementDragBegin(ActionListDraggableElement source)
+    {
+        // Change the container of the UI Element (make it in front of all the other elements)
+        CreateTempDragContainer();
+        source.transform.parent = tempDragContainer.transform;
+    }
+
+    // Change the color of the droping position
+    void OnListElementDrag(ActionListDraggableElement source)
+    {
+        if (placeHolders == null || toDoList == null) return;
+        bool dropPositonFound = false;
+        RectTransform sourceRect = source.gameObject.GetComponent<RectTransform>();
+        int originalIndex = source.GetIndex();
+        int maxIndex = Mathf.Min(placeHolders.Count, toDoList.Items.Count);
+        for (int index = 0; index < maxIndex; index++)
+        {
+            if (index == originalIndex) continue;
+            RectTransform placeHolderRect = placeHolders[index].GetComponent<RectTransform>();
+            ActionListDraggableElement listElement = uiElements[index].GetComponent<ActionListDraggableElement>();
+            if (placeHolderRect.Overlaps(sourceRect, true) && !dropPositonFound)
+            {
+                listElement.ChangeColor(dropColor);
+                dropPositonFound = true;
+            }
+            else
+            {
+                listElement.ResetToInitColor();
+            }
+        }
+    }
+
     void OnListElementDragEnd (ActionListDraggableElement source)
     {
         // Check if the UI element is included in the rect of another placeHolder
         // if this placeHolder is different, swap the two elements in the list
         RectTransform sourceRect = source.gameObject.GetComponent<RectTransform>();
         Debug.Log("On drag End, source: " + source.gameObject.name + " position: " + sourceRect);
-        
         int originalIndex = source.GetIndex();
+        bool couldMove = false;
         for (int index = 0; index < placeHolders.Count; index++)
         {
             if (index == originalIndex) continue;
             RectTransform placeHolderRect = placeHolders[index].GetComponent<RectTransform>();
             if (placeHolderRect.Overlaps(sourceRect, true))
             {
-                SwapListElement(originalIndex, index);
-                return;
+                MoveListElementTo(originalIndex, index);
+                couldMove = true;
+                break; // stop searching
             }
         }
-        source.ResetPosition();
+        if (!couldMove)
+        {
+            source.gameObject.transform.parent = placeHolders[originalIndex].transform;
+            source.ResetPosition();
+        }
+        DestroyTempDragContainer();
     }
 
-    public void SwapListElement(int index1, int index2)
+    public void MoveListElementTo(int oldIndex, int newIndex)
     {
         if (toDoList != null)
         {
-            Debug.Log("Swap list elements");
-            toDoList.SwapPosition(index1, index2);
+            Debug.Log("Move list elements from " + oldIndex + " to " + newIndex + ")");
+            newIndex = Mathf.Min(newIndex, toDoList.Items.Count - 1);
+            toDoList.MoveElementTo(oldIndex, newIndex);
             toDoListChanged.Raise();
-        } 
+        }
     }
-
-
 
     private void InitPlaceHolders()
     {
@@ -80,15 +140,11 @@ public class ActionListUIManager : MonoBehaviour {
         }
     }
 
-    private void Update()
-    {
-        
-    }
-
     // TODO: to optimise
     public void UpdateTaskListUI()
     {
         ClearTaskListUI();
+        uiElements = new List<GameObject>();
         if (toDoList != null && placeHolders != null)
         {
             int index = 0;
@@ -100,6 +156,7 @@ public class ActionListUIManager : MonoBehaviour {
                 ActionListDraggableElement actionListElement = obj.GetComponent<ActionListDraggableElement>();
                 actionListElement.SetAction (toDoList.Items[index]);
                 actionListElement.SetIndex (index);
+                uiElements.Add(obj); // store object reference
                 index++;
             }
         }

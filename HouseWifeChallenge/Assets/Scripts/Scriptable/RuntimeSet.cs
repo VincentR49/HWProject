@@ -30,28 +30,36 @@ public abstract class RuntimeSet<T> : ScriptableObject {
 			Items[index1] = Items[index2];
 			Items[index2] = temp;
 		}
+        else
+        {
+            Debug.Log("Error: invalid indexes (" + index1 + " and " + index2 + ")");
+        }
 	}
 	
 	public void PutAtTheEnd(int index)
 	{
-		if (IsValidIndex(index))
-		{
-			T temp = Items[index];
-			Items.RemoveAt(index);
-			Items.Add(temp);
-		}
+        MoveElementTo(index, Items.Count - 1);
 	}
 	
 	public void PutAtFirst(int index)
 	{
-		if (IsValidIndex(index))
-		{
-			T temp = Items[index];
-			Items.RemoveAt(index);
-			Items.Insert(0, temp);
-		}
+        MoveElementTo(index, 0);
 	}
-	
+
+    public void MoveElementTo(int oldIndex, int newIndex)
+    {
+        if (IsValidIndex(oldIndex) && IsValidIndex(newIndex))
+        {
+            T temp = Items[oldIndex];
+            Items.RemoveAt(oldIndex);
+            Items.Insert(newIndex, temp);
+        }
+        else
+        {
+            Debug.Log("Invalid index");
+        }
+    }
+
 	public bool IsValidIndex(int index)
 	{
 		return Items != null && index >= 0 && index < Items.Count;
