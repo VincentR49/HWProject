@@ -4,13 +4,12 @@ using UnityEngine;
 using System.Linq;
 using static Utils;
 
-
+// 
 public class PathFindingManager : MonoBehaviour {
 
     public static int limitStepAlgo = 1000;
     private Queue<Node> currentPath;
     public PathfindingGrid grid;
-
 
 	// Get the path to follow using a A* start algorithm
     public Queue<Node> GetPathWithAStarAlgo(Vector2 startPos, Vector2 targetPos)
@@ -45,7 +44,7 @@ public class PathFindingManager : MonoBehaviour {
 			closeList.AddUnique(currentNode);
          
             // Add neighbour nodes to the open list if they are not in the closeList
-            List<Node> neighbours = grid.GetNeighbours(currentNode);
+            List<Node> neighbours = grid.GetFreeNeighbours(currentNode);
             foreach (Node node in neighbours)
             {   
                 if (!closeList.Contains(node))

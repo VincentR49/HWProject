@@ -52,15 +52,31 @@ public class PlayerController : MonoBehaviour {
     }
 	
 	// Go to the given position using an A* pathfinding algorithm
-	public void MoveTo(Vector2 newPosition)
+	public void MoveTo (Vector2 newPosition)
 	{
 		Vector2 startPos = new Vector2(transform.position.x, transform.position.y);
         Queue<Node> nodePath = pathFindingManager.GetPathWithAStarAlgo(startPos, newPosition);
         StartFollowingPath (PathFindingManager.ConvertPathToWorldCoord(nodePath));
 	}
-	
-	// Set the new path to follow
-	private void StartFollowingPath(Queue<Vector2> path)
+
+    // Move to the given object
+    // Check all the paths leading to tile neibourgh from this object
+    // Choose the shorten path
+    // if no path exist, return false
+    public bool MoveToObject(GameObject targetObj)
+    {
+        List<Node> potentialNodes = pathFindingManager.grid.GetFreeNeighbours(targetObj);
+        string str = "";
+        foreach (Node node in potentialNodes)
+        {
+            str += " " + node.ToString();
+        }
+        Debug.Log("Free node at:" + str);
+        return false;
+    }
+
+    // Set the new path to follow
+    private void StartFollowingPath(Queue<Vector2> path)
 	{
 		this.path = path;
 		isFollowingPath = true;
@@ -73,17 +89,17 @@ public class PlayerController : MonoBehaviour {
 			StopFollowingPath();
 		}
 	}
-	
-	// Stop following the current path
-	private void StopFollowingPath()
+
+    // Stop following the current path
+    private void StopFollowingPath()
 	{
 		isFollowingPath = false;
 		path = null;
         nextPathPosition = new Vector2(transform.position.x, transform.position.y);
 	}
-	
-	// Follow the current path by updating the playerMove vector
-	private void FollowPath()
+
+    // Follow the current path by updating the playerMove vector
+    private void FollowPath()
 	{
         Vector2 currentPosition = new Vector2(transform.position.x, transform.position.y);
         Vector2 movement = nextPathPosition - currentPosition;
@@ -102,4 +118,6 @@ public class PlayerController : MonoBehaviour {
 		}
 		playerMove = movement;
 	}
+
+    
 }

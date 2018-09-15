@@ -88,27 +88,27 @@ public class PathfindingGrid : ScriptableObject {
     // Return the free neighbours node of one defined node
 	// If a wall exist on the bottom, its neihbours nodes right and left are considered are not walkable.
 	// Same for left / right / top neighbour wall.
-    public List<Node> GetNeighbours(Node node)
+    // TODO: simplify
+    public List<Node> GetFreeNeighbours(Node node)
     {
         List<Node> neighbours = new List<Node>();
         if (node != null)
         {
-            int xMin = Mathf.Max(node.gridX - 1, 0);
-            int xMax = Mathf.Min(node.gridX + 1, Width - 1);
-            int yMin = Mathf.Max(node.gridY - 1, 0);
-            int yMax = Mathf.Min(node.gridY + 1, Height - 1);
+            int xMin = Mathf.Max (node.gridX - 1, 0);
+            int xMax = Mathf.Min (node.gridX + 1, Width - 1);
+            int yMin = Mathf.Max (node.gridY - 1, 0);
+            int yMax = Mathf.Min (node.gridY + 1, Height - 1);
 
-            bool isTopWall = !CanWalkPosition(node.gridX, node.gridY + 1);
-            bool isBottomWall = !CanWalkPosition(node.gridX, node.gridY - 1);
-            bool isLeftWall = !CanWalkPosition(node.gridX - 1, node.gridY);
-            bool isRightWall = !CanWalkPosition(node.gridX + 1, node.gridY);
+            bool isTopWall = !IsFree (node.gridX, node.gridY + 1);
+            bool isBottomWall = !IsFree (node.gridX, node.gridY - 1);
+            bool isLeftWall = !IsFree (node.gridX - 1, node.gridY);
+            bool isRightWall = !IsFree (node.gridX + 1, node.gridY);
 
             for (int x = xMin; x <= xMax; x++)
             {
                 for (int y = yMin; y <= yMax; y++)
                 {
-                    if ((x == node.gridX && y == node.gridY)
-                        || !CanWalkPosition(x,y))
+                    if ((x == node.gridX && y == node.gridY) || !IsFree(x,y))
                     {
                         // ne rien faire
                     }
@@ -132,10 +132,85 @@ public class PathfindingGrid : ScriptableObject {
         return neighbours;
     }
 
-	// Return true if the given position is free (not wall, not empty and not outside the borders)
-    public bool CanWalkPosition(int x, int y)
+    public List<Node> GetDirectNeighbours(Node node)
     {
-        if (x < 0 || y < 0 || x > Width - 1 || y > Height - 1)
+        List<Node> neighbours = new List<Node>();
+        int x = node.gridX;
+        int y = node.gridY;
+        if (y > 0)
+        {
+            neighbours.Add(nodes[x, y - 1]);
+        }
+        if (x > 0)
+        {
+            neighbours.Add(nodes[x - 1 , y]);
+        }
+        if (y < Height - 1)
+        {
+            neighbours.Add(nodes[x, y + 1]);
+        }
+        if (x < Width - 1)
+        {
+            neighbours.Add(nodes[x + 1, y]);
+        }
+        return neighbours;
+    }
+
+
+    // Get the free neighbours at the top, bottom, left and right of the objects.
+    public List<Node> GetFreeDirectNeighbours(Node node)
+    {
+        List<Node> neighbours = new List<Node>();
+        foreach (Node n in GetDirectNeighbours(node))
+        {
+            if (IsFree(n.gridX, n.gridY))
+                neighbours.Add(n);
+        }
+        return neighbours;
+    }
+
+    // Return the list of free node near a given object
+    // WARNING: the obj should have a sprite rendered
+    // For a sprite with height and width > 1, the sprite origin should be at the bottom left.
+    public List<Node> GetFreeNeighbours (GameObject obj)
+    {
+        List<Node> neighbours = new List<Node>();
+        if (obj != null)
+        {
+            SpriteRenderer sprite = obj.GetComponent<SpriteRenderer>();
+            if (sprite != null)
+            {
+                float width = sprite.bounds.size.x;
+                float height = sprite.bounds.size.y;
+                Node nodeZero = GetNodeFromWorldPosition(obj.transform.position);
+                for (int x = 0; x < width; x++)
+                {
+                    int nodeX = nodeZero.gridX + x;
+                    for (int y = 0; y < height; y++)
+                    {
+                        int nodeY = nodeZero.gridY + y;
+                        if (!IsInsideGridLimit(nodeX, nodeY)) continue;
+                        foreach (Node node in GetFreeDirectNeighbours(nodes[nodeX, nodeY]))
+                        {
+                            neighbours.AddUnique(node);
+                        }
+                    }
+                }
+            }
+        }
+        return neighbours;
+    }
+
+
+    public bool IsInsideGridLimit(int x, int y)
+    {
+        return x >= 0 || y >= 0 || x < Width || y < Height;
+    }
+
+    // Return true if the given position is free (not wall, not empty and not outside the borders)
+    public bool IsFree(int x, int y)
+    {
+        if (!IsInsideGridLimit(x,y))
         {
             return false;
         }

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static Utils;
+using UnityEngine.Tilemaps;
 
 // Attach this to the player object in order to perform actions automatically from a given list
 [RequireComponent(typeof(PlayerController))]
@@ -10,21 +11,25 @@ using static Utils;
 public class ActionPerformerAI : ActionPerformer
 {
 	// Note: has reference to ActionTracker by heritage
-	
 	[Tooltip("List of task to perform")]
-	public ActionSet actionList;
-	
-	[Tooltip("List containing the reference to all the interactible object on the scene")]
+	public ActionSet toDoActions;
+
+    [Tooltip("List of completed tasks")]
+    public ActionSet finishedActions;
+
+    [Tooltip("List containing the reference to all the interactible object on the scene")]
 	public GameObjectSet interactibleObjects;
 	
 	PlayerController playerController;
+    PathFindingManager pathFindingManager;
+
 	bool busy = false;
-	private Action currentAction;
-	
-	
-	private void Start()
+    private Action currentAction;
+
+	private void Awake()
 	{
 		playerController = GetComponent<PlayerController>();
+        pathFindingManager = GetComponent<PathFindingManager>();
 	}
 	
 	private void Update()
@@ -37,13 +42,47 @@ public class ActionPerformerAI : ActionPerformer
         // On se déplace vers cet objet
         // On execute l'action
         // Une fois l'action terminée, on l'enlève de la liste
-        if (!busy && actionList.Items.Count > 0)
+        if (!busy)
 		{
-		
-		
-		}
+            SelectCurrentAction();
+            StartCurrentAction();
+        }
+        else // busy mode
+        {
+            // check is the player is near the object
+            // if is near enough perform the action
+        }
     }
-	
+
+    private void StartCurrentAction()
+    {
+        GameObject[] objects = ScanInteractibleObjects(currentAction); // search object that can do this action
+        if (objects != null)
+        {
+            Debug.Log("Start action " + currentAction.name);
+            GameObject interactiveObject = GetClosestObject(objects);
+            playerController.MoveToObject(interactiveObject);
+            busy = true;
+        }
+        else
+        {
+            Debug.Log("Couldnt find any object able to perform this action. Action impossible");
+        } 
+    }
+
+    private void SelectCurrentAction()
+    {
+        if (toDoActions.Items.Count == 0)
+        {
+            currentAction = null;
+        }
+        else
+        {
+            currentAction = toDoActions.Items[0];
+            Debug.Log("Selected current action " + currentAction.name);
+        }
+    }
+
 	protected override void ExecuteAction (Action action, GameObject interactiveObject)
 	{
 		base.ExecuteAction (action, interactiveObject);
@@ -80,7 +119,7 @@ public class ActionPerformerAI : ActionPerformer
 	}
 	
 	// Detect in the map the interactible objects containing the given action
-	private GameObject[] GetInteractibleObjects (Action action)
+	private GameObject[] ScanInteractibleObjects (Action action)
 	{
 		if (interactibleObjects.Items == null) return null;
 		List<GameObject> gameObjects = new List<GameObject>();
