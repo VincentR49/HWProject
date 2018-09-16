@@ -21,3 +21,4 @@ MonoBehaviour:
   playerControlAI:
   - Interactible
   - ActionPerformerAI
+  - PlayerController

@@ -25,6 +25,7 @@ public class ActionPerformerAI : ActionPerformer
 
 	bool busy = false;
     private Action currentAction;
+    private GameObject targetObject; // object target of the action
 
 	private void Awake()
 	{
@@ -49,8 +50,17 @@ public class ActionPerformerAI : ActionPerformer
         }
         else // busy mode
         {
-            // check is the player is near the object
-            // if is near enough perform the action
+            if (currentAction != null && targetObject != null)
+            {
+                if (IsCloseEnough(targetObject))
+                {
+                    StartAction(currentAction, targetObject);
+                }
+            }
+            else
+            {
+                ResetCurrentAction();
+            }
         }
     }
 
@@ -62,16 +72,19 @@ public class ActionPerformerAI : ActionPerformer
             Debug.Log("Start action " + currentAction.name);
             GameObject interactiveObject = GetClosestObject(objects);
             playerController.MoveToObject(interactiveObject);
+            targetObject = interactiveObject;
             busy = true;
         }
         else
         {
+            ResetCurrentAction();
             Debug.Log("Couldnt find any object able to perform this action. Action impossible");
         } 
     }
 
     private void SelectCurrentAction()
     {
+        ResetCurrentAction();
         if (toDoActions.Items.Count == 0)
         {
             currentAction = null;
@@ -92,15 +105,23 @@ public class ActionPerformerAI : ActionPerformer
     protected override void FinishAction (Action action, GameObject interactiveObject)
 	{
 		base.FinishAction (action, interactiveObject);
-		// TODO à spécifier
-	}
+        ResetCurrentAction();
+
+    }
 
     protected override void CancelAction (Action action, GameObject interactiveObject)
 	{
 		base.CancelAction (action, interactiveObject);
-		// TODO à spécifier
-	}
+        ResetCurrentAction();
+    }
 	
+    private void ResetCurrentAction()
+    {
+        currentAction = null;
+        targetObject = null;
+        busy = false;
+    }
+
 	
 	private GameObject GetClosestObject (GameObject[] gameObjects)
 	{

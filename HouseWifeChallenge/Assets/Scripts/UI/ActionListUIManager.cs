@@ -62,7 +62,7 @@ public class ActionListUIManager : MonoBehaviour {
     {
         // Change the container of the UI Element (make it in front of all the other elements)
         CreateTempDragContainer();
-        source.transform.parent = tempDragContainer.transform;
+        source.transform.SetParent(tempDragContainer.transform);
     }
 
     // Change the color of the droping position
@@ -111,7 +111,7 @@ public class ActionListUIManager : MonoBehaviour {
         }
         if (!couldMove)
         {
-            source.gameObject.transform.parent = placeHolders[originalIndex].transform;
+            source.gameObject.transform.SetParent(placeHolders[originalIndex].transform);
             source.ResetPosition();
         }
         DestroyTempDragContainer();
