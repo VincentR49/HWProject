@@ -24,14 +24,19 @@ public class ActionTracker : ScriptableObject
 	
 	public enum Status
 	{
-		Waiting,
-		Running,
-		Finished
+		Waiting, // action selected but waiting to be executed
+		Running, // action currently running
+		Finished // action finished (inactive)
 	}
 	
 	public bool ActionIsRunning()
 	{
 		return action != null && status == Status.Running;
+	}
+	
+	public bool ActionWaitToBeExecuted()
+	{
+		return action != null && status == Status.Waiting;
 	}
 }
 

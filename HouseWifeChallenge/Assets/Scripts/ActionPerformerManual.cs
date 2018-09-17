@@ -4,20 +4,28 @@ using UnityEngine;
 using static Utils;
 
 // Attach this to the player object in order to perform actions manually by clicking on the object
+// TODO: go to the object if the object is too far from the player
+[RequireComponent(typeof(PlayerController))]
 public class ActionPerformerManual : ActionPerformer
 {
+	PlayerController playerController;
 
+	private void Awake()
+	{
+		playerController = GetComponent<PlayerController>();
+	}
+	
 	private void Update()
 	{
-        UpdateCurrentActionState();
-
+        UpdateActionState();
         if (Input.GetMouseButtonDown(1))
 		{
             Vector2 mousePosition = To2D(Camera.main.ScreenToWorldPoint(Input.mousePosition));
             GameObject interactiveObject = GetInteractiveObjectAtPosition(mousePosition);
 			if (interactiveObject != null)
 			{
-				StartAction(interactiveObject.GetComponent<Interactible>().action, interactiveObject);
+				InitAction(interactiveObject.GetComponent<Interactible>().action, interactiveObject);
+				playerController.MoveToObject(interactiveObject);
 			}
 		}
 	}

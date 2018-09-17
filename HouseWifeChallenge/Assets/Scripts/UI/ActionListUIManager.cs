@@ -12,7 +12,7 @@ public class ActionListUIManager : MonoBehaviour {
     public GameEvent toDoListChanged;
     public GameObject actionListElementPrefab;
     public Color dropColor = Color.cyan;
-
+	public Color currentActionColor = Color.yellow;
 
     private List<GameObject> uiElements;
     private List<GameObject> placeHolders;
@@ -39,6 +39,12 @@ public class ActionListUIManager : MonoBehaviour {
         UpdateTaskListUI();
     }
 
+	private void Update()
+	{
+	
+	}
+	
+	
     // Create an empty object at the end of the children tree hierarchy, to be visible over all the other elements
     private void CreateTempDragContainer()
     {
@@ -69,16 +75,16 @@ public class ActionListUIManager : MonoBehaviour {
     void OnListElementDrag(ActionListDraggableElement source)
     {
         if (placeHolders == null || toDoList == null) return;
-        bool dropPositonFound = false;
         RectTransform sourceRect = source.gameObject.GetComponent<RectTransform>();
         int originalIndex = source.GetIndex();
         int maxIndex = Mathf.Min(placeHolders.Count, toDoList.Items.Count);
+		bool dropPositonFound = false;
         for (int index = 0; index < maxIndex; index++)
         {
             if (index == originalIndex) continue;
             RectTransform placeHolderRect = placeHolders[index].GetComponent<RectTransform>();
             ActionListDraggableElement listElement = uiElements[index].GetComponent<ActionListDraggableElement>();
-            if (placeHolderRect.Overlaps(sourceRect, true) && !dropPositonFound)
+            if (!dropPositonFound && placeHolderRect.Overlaps(sourceRect, true))
             {
                 listElement.ChangeColor(dropColor);
                 dropPositonFound = true;

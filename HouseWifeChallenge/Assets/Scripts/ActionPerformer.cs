@@ -4,6 +4,7 @@ using UnityEngine;
 using static Utils;
 
 // Abstract class defining the basics methods to interract with interactible objects
+[RequireComponent(typeof(PlayerController))]
 public abstract class ActionPerformer : MonoBehaviour
 {
 	[Tooltip("Reference to the object storing the information about the current action")]
@@ -11,38 +12,34 @@ public abstract class ActionPerformer : MonoBehaviour
 
     [Tooltip("Distance minimal from the object and performer to be able to interact")]
     public double minInteractionDistance = 1.3;
-	
-	// Execute the action. Cancel current action if one acion is currently running and is different from the given action.
-	public void StartAction(Action action, GameObject interactiveObject)
-	{
-		if (action == null) return;
-		if (!actionTracker.ActionIsRunning()) // no action is running
-		{
-			ExecuteAction (action, interactiveObject);
-		}
-		else 
-		{
-			if (actionTracker.action != action)
-			{
-				CancelAction (actionTracker.action, actionTracker.performer); // reference to the object in interaction ??
-				ExecuteAction (action, interactiveObject);
-			}
-		}
-	}
-	
-	// Execute at each frame
-	protected void UpdateCurrentActionState()
+
+	// Check the status of the action tracker and execute, cancel or update the current action
+	protected void UpdateActionState()
 	{
 		if (actionTracker.ActionIsRunning())
 		{
-			if (!IsCloseEnough(actionTracker.interactible))
+			// if the action is running, update current progress
+			if (IsCloseEnough(actionTracker.interactible))
 			{
-				CancelAction (actionTracker.action, actionTracker.interactible);
+				actionTracker.progress += Time.deltaTime;
+				if (actionTracker.progress >= actionTracker.action.duration)
+				{
+					FinishAction();
+				}
 			}
-			else
+			else // if we are too far from the object, the current action is canceled
 			{
-				UpdateActionTrackerProgress();
+				CancelAction ();
 			}
+		}
+		else if (actionTracker.ActionWaitToBeExecuted() 
+				 && IsCloseEnough(actionTracker.interactible))
+		{
+			ExecuteAction();
+		}
+		else
+		{
+			// do nothing
 		}
 	}
 	
@@ -61,37 +58,47 @@ public abstract class ActionPerformer : MonoBehaviour
         return false;
 	}
 
-	// Update the current progress of the action and finish the action if necessary
-	private void UpdateActionTrackerProgress()
+	// Initiate action. Cancel current action if one acion is currently running and is different from the given action.
+	public void InitAction(Action action, GameObject interactiveObject)
 	{
-		actionTracker.progress += Time.deltaTime;
-		if (actionTracker.progress >= actionTracker.action.duration)
+		if (actionTracker.ActionIsRunning()) // no action running
 		{
-            FinishAction(actionTracker.action, actionTracker.interactible);
+			CancelAction ();
 		}
+		InitActionTracker(action, interactiveObject);
 	}
-
-	protected virtual void ExecuteAction(Action action, GameObject interactiveObject)
+	
+	// Initialisation of the action tracker
+	// Set all the information about the currentAction
+	public void InitActionTracker (Action action, GameObject interactiveObject)
 	{
-		action.Execute (gameObject, interactiveObject); 
 		actionTracker.action = action;
 		actionTracker.performer = gameObject;
 		actionTracker.interactible = interactiveObject;
 		actionTracker.progress = 0;
-        actionTracker.status = IsCloseEnough(interactiveObject) ? ActionTracker.Status.Running : ActionTracker.Status.Waiting;
+		actionTracker.status = ActionTracker.Status.Waiting;
 	}
 	
-	protected virtual void FinishAction(Action action, GameObject interactiveObject)
+	// Execute the action stored in the actionTracker
+	protected virtual void ExecuteAction()
 	{
-		action.Finish (gameObject, interactiveObject);
+        actionTracker.status = ActionTracker.Status.Running;
+		actionTracker.action.Execute (gameObject, interactiveObject); // execute action
+	}
+	
+	// Finish the action stored in the actionTracker
+	protected virtual void FinishAction()
+	{
 		actionTracker.status = ActionTracker.Status.Finished;
 		actionTracker.progress = action.duration;
+		actionTracker.action.Finish (gameObject, actionTracker.interactible); // finish action
 	}
 	
-	protected virtual void CancelAction(Action action, GameObject interactiveObject)
+	// Cancel the action stored in the actionTracker
+	protected virtual void CancelAction()
 	{
-		action.Cancel (gameObject, interactiveObject);
 		actionTracker.progress = 0;
 		actionTracker.status = ActionTracker.Status.Waiting;
+		actionTracker.action.Cancel (gameObject, actionTracker.interactible); // cancel action
 	}
 }

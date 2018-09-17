@@ -6,8 +6,15 @@ using static Utils;
 using UnityEngine.Tilemaps;
 
 // Attach this to the player object in order to perform actions automatically from a given list
+// Basic AI:
+// on Sélectionne la première action de la liste comme action en cours
+// On détecte le plus proche object permettant de faire l'action
+// On se déplace vers cet objet
+// On execute l'action
+// Une fois l'action terminée, on l'enlève de la liste et le met dans la liste terminée
+
+// TODO: que faire lorsque l'action sélectionnée ne peut être exécutée? -> passer à la suivante dans la liste
 [RequireComponent(typeof(PlayerController))]
-[RequireComponent(typeof(PathFindingManager))]
 public class ActionPerformerAI : ActionPerformer
 {
 	// Note: has reference to ActionTracker by heritage
@@ -21,108 +28,101 @@ public class ActionPerformerAI : ActionPerformer
 	public GameObjectSet interactibleObjects;
 	
 	PlayerController playerController;
-    PathFindingManager pathFindingManager;
 
-	bool busy = false;
-    private Action currentAction;
-    private GameObject targetObject; // object target of the action
+	// mettre ces attributs dans le actionTracker
+	bool Busy => actionTracker. ActionIsRunning || actionTracker.ActionWaitToBeExecuted();
 
 	private void Awake()
 	{
 		playerController = GetComponent<PlayerController>();
-        pathFindingManager = GetComponent<PathFindingManager>();
 	}
 	
 	private void Update()
 	{
-        UpdateCurrentActionState();
-        // TODO: à spécifier
-        // Si not busy et que la liste d'action en cours et non vide
-        // on Sélectionne la première action de la liste comme action en cours
-        // On détecte le plus proche object permettant de faire l'action
-        // On se déplace vers cet objet
-        // On execute l'action
-        // Une fois l'action terminée, on l'enlève de la liste
-        if (!busy)
+        UpdateActionState();
+        
+        if (!Busy)
 		{
-            SelectCurrentAction();
-            StartCurrentAction();
-        }
-        else // busy mode
-        {
-            if (currentAction != null && targetObject != null)
-            {
-                if (IsCloseEnough(targetObject))
-                {
-                    StartAction(currentAction, targetObject);
-                }
-            }
-            else
-            {
-                ResetCurrentAction();
-            }
+            Action action = SelectFirstAction(); // take the first actiojn from the toDoList
+			if (action != null)
+			{
+				StartAction (action); // Init action tracker and start to move the object 
+			}
         }
     }
 
-    private void StartCurrentAction()
+	// Start the selected action
+	// Initiation the actionTracker and move to the closest object containing this action
+    private void StartAction (Action action)
     {
-        GameObject[] objects = ScanInteractibleObjects(currentAction); // search object that can do this action
+		// search object in the scene that can do this action
+        GameObject[] objects = ScanInteractibleObjects(action); 
         if (objects != null)
         {
-            Debug.Log("Start action " + currentAction.name);
             GameObject interactiveObject = GetClosestObject(objects);
+			InitAction(action, interactiveObject);
+			Debug.Log("Start action " + action.name);
             playerController.MoveToObject(interactiveObject);
-            targetObject = interactiveObject;
-            busy = true;
         }
         else
         {
-            ResetCurrentAction();
             Debug.Log("Couldnt find any object able to perform this action. Action impossible");
         } 
     }
 
-    private void SelectCurrentAction()
+	// Take the first action from the current toDoList
+	// Return null if the list is empty
+    private Action SelectFirstAction()
     {
-        ResetCurrentAction();
-        if (toDoActions.Items.Count == 0)
+        if (toDoActions.Items.Count > 0)
         {
-            currentAction = null;
+            Action action = toDoActions.Items[0];
+            Debug.Log("Selected current action " + action.name);
+			return action;
         }
-        else
-        {
-            currentAction = toDoActions.Items[0];
-            Debug.Log("Selected current action " + currentAction.name);
-        }
+		else
+		{
+			return null
+		}
     }
 
-	protected override void ExecuteAction (Action action, GameObject interactiveObject)
+	protected override void ExecuteAction ()
 	{
-		base.ExecuteAction (action, interactiveObject);
-		// TODO à spécifier
+		base.ExecuteAction ();
 	}
 
-    protected override void FinishAction (Action action, GameObject interactiveObject)
+    protected override void FinishAction ()
 	{
-		base.FinishAction (action, interactiveObject);
-        ResetCurrentAction();
-
+		base.FinishAction ();
+		MarkActionAsFinished (actionTracker.action);
     }
 
-    protected override void CancelAction (Action action, GameObject interactiveObject)
+	private void MarkActionAsFinished(Action action)
 	{
-		base.CancelAction (action, interactiveObject);
-        ResetCurrentAction();
-    }
-	
-    private void ResetCurrentAction()
-    {
-        currentAction = null;
-        targetObject = null;
-        busy = false;
-    }
+		toDoList.Remove (action);
+		finishedActions.Add (action);
+	}
 
 	
+    protected override void CancelAction ()
+	{
+		base.CancelAction ();
+    }
+	
+	// Execute when the doToListChanged
+	public void OnToDoListChanged()
+	{
+		// Check if the first action changed
+		// If so, canceled the current action and start a new one
+		Action firstAction = SelectFirstAction();
+		if (firstAction != null && firstAction != actionTracker.action)
+		{
+			CancelAction(); // cancel current action
+			StartAction (action); // start a new action
+		}
+	}
+
+	// Get the closest object from the player in the list
 	private GameObject GetClosestObject (GameObject[] gameObjects)
 	{
 		GameObject closestObject = null;
