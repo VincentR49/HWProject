@@ -26,18 +26,25 @@ public class ActionPerformerAI : ActionPerformer
 
     [Tooltip("List containing the reference to all the interactible object on the scene")]
 	public GameObjectSet interactibleObjects;
-	
+
+    public GameEvent toDoListHasChanged;
+
 	PlayerController playerController;
 
 	// mettre ces attributs dans le actionTracker
-	bool Busy => actionTracker. ActionIsRunning || actionTracker.ActionWaitToBeExecuted();
+	bool Busy => actionTracker.ActionIsRunning() || actionTracker.ActionWaitToBeExecuted();
 
 	private void Awake()
 	{
 		playerController = GetComponent<PlayerController>();
 	}
-	
-	private void Update()
+
+    private void Start()
+    {
+        actionTracker.Reset();
+    }
+
+    private void Update()
 	{
         UpdateActionState();
         
@@ -77,12 +84,15 @@ public class ActionPerformerAI : ActionPerformer
         if (toDoActions.Items.Count > 0)
         {
             Action action = toDoActions.Items[0];
-            Debug.Log("Selected current action " + action.name);
+            if (action != null)
+            {
+                Debug.Log("Selected current action " + action.name);
+            }
 			return action;
         }
 		else
 		{
-			return null
+            return null;
 		}
     }
 
@@ -99,9 +109,10 @@ public class ActionPerformerAI : ActionPerformer
 
 	private void MarkActionAsFinished(Action action)
 	{
-		toDoList.Remove (action);
+		toDoActions.Remove (action);
 		finishedActions.Add (action);
-	}
+        toDoListHasChanged.Raise();
+    }
 
 	
     protected override void CancelAction ()
@@ -114,8 +125,8 @@ public class ActionPerformerAI : ActionPerformer
 	{
 		// Check if the first action changed
 		// If so, canceled the current action and start a new one
-		Action firstAction = SelectFirstAction();
-		if (firstAction != null && firstAction != actionTracker.action)
+		Action action = SelectFirstAction();
+		if (action != null && action != actionTracker.action)
 		{
 			CancelAction(); // cancel current action
 			StartAction (action); // start a new action
@@ -149,7 +160,7 @@ public class ActionPerformerAI : ActionPerformer
 			Interactible interactible = obj.GetComponent<Interactible>();
 			if (interactible != null)
 			{
-				if (interactible.action == action)
+				if (interactible.action.GetType().Equals(action.GetType()))
 				{
                     gameObjects.Add(obj);
 				}

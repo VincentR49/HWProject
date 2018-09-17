@@ -23,5 +23,4 @@ public class TakeFood : Action
 		Debug.Log (player.name + " has finished taking food from " + interactibleObject.name);
         return true;
     }
-	
 }

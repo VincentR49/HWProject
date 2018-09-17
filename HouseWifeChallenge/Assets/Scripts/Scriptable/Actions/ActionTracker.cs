@@ -38,5 +38,14 @@ public class ActionTracker : ScriptableObject
 	{
 		return action != null && status == Status.Waiting;
 	}
+
+    public void Reset()
+    {
+        action = null;
+        progress = 0;
+        performer = null;
+        interactible = null;
+        status = Status.Waiting;
+    }
 }
 

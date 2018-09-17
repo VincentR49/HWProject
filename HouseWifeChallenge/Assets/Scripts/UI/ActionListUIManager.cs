@@ -11,8 +11,6 @@ public class ActionListUIManager : MonoBehaviour {
     public ActionTracker currentTracker;
     public GameEvent toDoListChanged;
     public GameObject actionListElementPrefab;
-    public Color dropColor = Color.cyan;
-	public Color currentActionColor = Color.yellow;
 
     private List<GameObject> uiElements;
     private List<GameObject> placeHolders;
@@ -22,14 +20,13 @@ public class ActionListUIManager : MonoBehaviour {
     void OnEnable()
     {
         ActionListDraggableElement.DragBeginEventDelegate += OnListElementDragBegin;
-        ActionListDraggableElement.DragEventDelegate += OnListElementDrag;
+
         ActionListDraggableElement.DragEndEventDelegate += OnListElementDragEnd;
     }
 
     void OnDisable()
     {
         ActionListDraggableElement.DragBeginEventDelegate -= OnListElementDragBegin;
-        ActionListDraggableElement.DragEventDelegate -= OnListElementDrag;
         ActionListDraggableElement.DragEndEventDelegate -= OnListElementDragEnd;
     }
 
@@ -38,12 +35,6 @@ public class ActionListUIManager : MonoBehaviour {
         InitPlaceHolders();
         UpdateTaskListUI();
     }
-
-	private void Update()
-	{
-	
-	}
-	
 	
     // Create an empty object at the end of the children tree hierarchy, to be visible over all the other elements
     private void CreateTempDragContainer()
@@ -69,31 +60,6 @@ public class ActionListUIManager : MonoBehaviour {
         // Change the container of the UI Element (make it in front of all the other elements)
         CreateTempDragContainer();
         source.transform.SetParent(tempDragContainer.transform);
-    }
-
-    // Change the color of the droping position
-    void OnListElementDrag(ActionListDraggableElement source)
-    {
-        if (placeHolders == null || toDoList == null) return;
-        RectTransform sourceRect = source.gameObject.GetComponent<RectTransform>();
-        int originalIndex = source.GetIndex();
-        int maxIndex = Mathf.Min(placeHolders.Count, toDoList.Items.Count);
-		bool dropPositonFound = false;
-        for (int index = 0; index < maxIndex; index++)
-        {
-            if (index == originalIndex) continue;
-            RectTransform placeHolderRect = placeHolders[index].GetComponent<RectTransform>();
-            ActionListDraggableElement listElement = uiElements[index].GetComponent<ActionListDraggableElement>();
-            if (!dropPositonFound && placeHolderRect.Overlaps(sourceRect, true))
-            {
-                listElement.ChangeColor(dropColor);
-                dropPositonFound = true;
-            }
-            else
-            {
-                listElement.ResetToInitColor();
-            }
-        }
     }
 
     void OnListElementDragEnd (ActionListDraggableElement source)

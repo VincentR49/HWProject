@@ -22,6 +22,7 @@ public abstract class RuntimeSet<T> : ScriptableObject {
         }
     }
 	
+
 	public void SwapPosition (int index1, int index2)
 	{
 		if (IsValidIndex(index1) && IsValidIndex(index2))

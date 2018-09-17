@@ -23,5 +23,4 @@ public class CutFood : Action
 		Debug.Log (player.name + " has finished cutting food with " + interactibleObject.name);
         return true;
     }
-	
 }

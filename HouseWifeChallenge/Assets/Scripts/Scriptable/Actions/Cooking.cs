@@ -23,5 +23,5 @@ public class Cooking : Action
 		Debug.Log (player.name + " has finished cooking with " + interactibleObject.name);
         return true;
     }
-	
+
 }

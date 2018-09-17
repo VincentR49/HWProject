@@ -11,7 +11,10 @@ public class ActionListDraggableElement : MonoBehaviour, IBeginDragHandler, IEnd
     [SerializeField]
     private Action action;
     public Color dragColor = Color.red;
-    
+    public Color currentActionColor = Color.yellow;
+    public ActionTracker currentTracker;
+
+
     // Drag events
     public delegate void DragEndAction (ActionListDraggableElement source); // use delegate to let the listener implements the method
     public static event DragEndAction DragEndEventDelegate;
@@ -32,6 +35,25 @@ public class ActionListDraggableElement : MonoBehaviour, IBeginDragHandler, IEnd
         UpdateContent();
     }
 
+    private void Start()
+    {
+        ResetPosition();
+    }
+
+    private void Update()
+    {
+        
+        if (currentTracker.action == action)
+        {
+            background.color = currentActionColor;
+        }
+        else
+        {
+            background.color = initColor;
+        }
+        
+    }
+
     public void ResetToInitColor()
     {
         background.color = initColor;
@@ -41,12 +63,6 @@ public class ActionListDraggableElement : MonoBehaviour, IBeginDragHandler, IEnd
     {
         background.color = color;
     }
-
-    private void Start()
-    {
-        ResetPosition();
-    }
-
 
     public void SetAction(Action action)
     {

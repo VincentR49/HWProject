@@ -83,14 +83,14 @@ public abstract class ActionPerformer : MonoBehaviour
 	protected virtual void ExecuteAction()
 	{
         actionTracker.status = ActionTracker.Status.Running;
-		actionTracker.action.Execute (gameObject, interactiveObject); // execute action
+		actionTracker.action.Execute (gameObject, actionTracker.interactible); // execute action
 	}
 	
 	// Finish the action stored in the actionTracker
 	protected virtual void FinishAction()
 	{
 		actionTracker.status = ActionTracker.Status.Finished;
-		actionTracker.progress = action.duration;
+		actionTracker.progress = actionTracker.action.duration;
 		actionTracker.action.Finish (gameObject, actionTracker.interactible); // finish action
 	}
 	

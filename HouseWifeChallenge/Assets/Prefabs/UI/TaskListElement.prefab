@@ -118,6 +118,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   action: {fileID: 11400000, guid: 6335f0e4f01473740a65d1047624bfe7, type: 2}
   dragColor: {r: 1, g: 0, b: 0, a: 1}
+  currentActionColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  currentTracker: {fileID: 11400000, guid: 8ba03bd3a5eefda449bde499215e7c51, type: 2}
 --- !u!222 &222192918389161046
 CanvasRenderer:
   m_ObjectHideFlags: 1
