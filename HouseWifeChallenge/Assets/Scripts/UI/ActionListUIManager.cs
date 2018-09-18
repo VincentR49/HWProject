@@ -12,15 +12,16 @@ public class ActionListUIManager : MonoBehaviour {
     public GameEvent toDoListChanged;
     public GameObject actionListElementPrefab;
 
+	
     private List<GameObject> uiElements;
     private List<GameObject> placeHolders;
     private ActionSet lastToList;
     private GameObject tempDragContainer;
-
+	private bool onDrag = false;
+	
     void OnEnable()
     {
         ActionListDraggableElement.DragBeginEventDelegate += OnListElementDragBegin;
-
         ActionListDraggableElement.DragEndEventDelegate += OnListElementDragEnd;
     }
 
@@ -42,7 +43,7 @@ public class ActionListUIManager : MonoBehaviour {
         DestroyTempDragContainer(); // to be sure
         Debug.Log("Create drag element container");
         tempDragContainer = new GameObject("Temp Drag Container");
-        tempDragContainer.transform.parent = gameObject.transform;
+        tempDragContainer.transform.SetParent (gameObject.transform);
         tempDragContainer.transform.SetAsLastSibling(); 
     }
 
@@ -58,6 +59,7 @@ public class ActionListUIManager : MonoBehaviour {
     void OnListElementDragBegin(ActionListDraggableElement source)
     {
         // Change the container of the UI Element (make it in front of all the other elements)
+		onDrag = true;
         CreateTempDragContainer();
         source.transform.SetParent(tempDragContainer.transform);
     }
@@ -87,6 +89,7 @@ public class ActionListUIManager : MonoBehaviour {
             source.ResetPosition();
         }
         DestroyTempDragContainer();
+		onDrag = false;
     }
 
     public void MoveListElementTo(int oldIndex, int newIndex)
@@ -112,6 +115,22 @@ public class ActionListUIManager : MonoBehaviour {
         }
     }
 
+	
+	public void OnToDoListHasChanged()
+	{
+		if (onDrag)
+		{
+			// Check if the draged element has been remove from the toDoList
+			ActionListDraggableElement listElementUI = 
+				tempDragContainer.GetChild(0).gameObject.GetComponent<ActionListDraggableElement>();
+			if (listElementUI != null && toDoList.Contains(listElementUI.action)
+			{
+				DestroyTempDragContainer();
+			}
+		}
+		UpdateTaskListUI();
+	}
+	
     // TODO: to optimise
     public void UpdateTaskListUI()
     {
