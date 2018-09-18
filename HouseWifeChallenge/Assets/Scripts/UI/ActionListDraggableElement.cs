@@ -26,7 +26,6 @@ public class ActionListDraggableElement : MonoBehaviour, IBeginDragHandler, IEnd
     private Text text;
     private RawImage background;
     private Color initColor;
-    private int index = 0;
 
 	private void Awake () {
         background = GetComponent<RawImage>();
@@ -42,7 +41,6 @@ public class ActionListDraggableElement : MonoBehaviour, IBeginDragHandler, IEnd
 
     private void Update()
     {
-        
         if (currentTracker.action == action)
         {
             background.color = currentActionColor;
@@ -51,7 +49,6 @@ public class ActionListDraggableElement : MonoBehaviour, IBeginDragHandler, IEnd
         {
             background.color = initColor;
         }
-        
     }
 
     public void ResetToInitColor()
@@ -101,11 +98,9 @@ public class ActionListDraggableElement : MonoBehaviour, IBeginDragHandler, IEnd
         transform.localPosition = new Vector3(0, 0, 0);
     }
 
-    public int GetIndex() => index;
-
-    public void SetIndex(int index)
+    public Action GetAction()
     {
-        this.index = index;
+        return action;
     }
 }
 

@@ -50,9 +50,12 @@ TagManager:
   - name: Objects
     uniqueID: 1570552089
     locked: 0
-  - name: UI
+  - name: DragObjects
     uniqueID: 708703657
     locked: 0
-  - name: DragUI
+  - name: Player
     uniqueID: 1198210109
+    locked: 0
+  - name: UI
+    uniqueID: 3470261385
     locked: 0

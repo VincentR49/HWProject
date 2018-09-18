@@ -11,6 +11,8 @@ public class Movable : TileBasedObject {
     public Color moveColorOk = new Color(0, 1, 0, 0.5f);
     public Color moveColorNOk = new Color(1, 0, 0, 0.5f);
     private Color initColor;
+    private string initMask;
+    private static string dragMask = "DragObjects";
     private Vector2 initPosition;
     bool isMoving;
 
@@ -18,6 +20,7 @@ public class Movable : TileBasedObject {
     {
         base.Awake();
         initColor = sprite.color;
+        initMask = sprite.sortingLayerName;
     }
 
     public void Update()
@@ -46,6 +49,7 @@ public class Movable : TileBasedObject {
     public void OnBeginMove()
     {
         isMoving = true;
+        sprite.sortingLayerName = dragMask;
         initPosition = new Vector2(transform.position.x, transform.position.y);
         DisableColliders();
     }
@@ -66,6 +70,7 @@ public class Movable : TileBasedObject {
             EnableColliders();
             isMoving = false;
             sprite.color = initColor;
+            sprite.sortingLayerName = initMask;
         }
     }
 

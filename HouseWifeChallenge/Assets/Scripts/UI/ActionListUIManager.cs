@@ -19,6 +19,16 @@ public class ActionListUIManager : MonoBehaviour {
     private GameObject tempDragContainer;
 	private bool onDrag = false;
 	
+    private ActionListDraggableElement DraggedElement
+    {
+        get
+        {
+            if (tempDragContainer == null) return null;
+            return tempDragContainer.transform.GetChild(0).gameObject.GetComponent<ActionListDraggableElement>();
+        }
+    }
+
+
     void OnEnable()
     {
         ActionListDraggableElement.DragBeginEventDelegate += OnListElementDragBegin;
@@ -68,28 +78,24 @@ public class ActionListUIManager : MonoBehaviour {
     {
         // Check if the UI element is included in the rect of another placeHolder
         // if this placeHolder is different, swap the two elements in the list
+        onDrag = false;
         RectTransform sourceRect = source.gameObject.GetComponent<RectTransform>();
         Debug.Log("On drag End, source: " + source.gameObject.name + " position: " + sourceRect);
-        int originalIndex = source.GetIndex();
-        bool couldMove = false;
+        int originalIndex = toDoList.Items.FindIndex(n => n == source.GetAction());
         for (int index = 0; index < placeHolders.Count; index++)
         {
             if (index == originalIndex) continue;
             RectTransform placeHolderRect = placeHolders[index].GetComponent<RectTransform>();
             if (placeHolderRect.Overlaps(sourceRect, true))
             {
+                DestroyTempDragContainer();
                 MoveListElementTo(originalIndex, index);
-                couldMove = true;
-                break; // stop searching
+                return;
             }
         }
-        if (!couldMove)
-        {
-            source.gameObject.transform.SetParent(placeHolders[originalIndex].transform);
-            source.ResetPosition();
-        }
+        source.gameObject.transform.SetParent(placeHolders[originalIndex].transform);
+        source.ResetPosition();
         DestroyTempDragContainer();
-		onDrag = false;
     }
 
     public void MoveListElementTo(int oldIndex, int newIndex)
@@ -118,21 +124,19 @@ public class ActionListUIManager : MonoBehaviour {
 	
 	public void OnToDoListHasChanged()
 	{
-		if (onDrag)
+		if (onDrag && DraggedElement != null)
 		{
-			// Check if the draged element has been remove from the toDoList
-			ActionListDraggableElement listElementUI = 
-				tempDragContainer.GetChild(0).gameObject.GetComponent<ActionListDraggableElement>();
-			if (listElementUI != null && toDoList.Contains(listElementUI.action)
+			if (!toDoList.Items.Contains(DraggedElement.GetAction()))
 			{
+                Debug.Log("Destroy temp container during drag");
 				DestroyTempDragContainer();
 			}
 		}
 		UpdateTaskListUI();
 	}
-	
+
     // TODO: to optimise
-    public void UpdateTaskListUI()
+    private void UpdateTaskListUI()
     {
         ClearTaskListUI();
         uiElements = new List<GameObject>();
@@ -143,11 +147,18 @@ public class ActionListUIManager : MonoBehaviour {
             foreach (GameObject placeHolder in placeHolders)
             {
                 if (index >= nActions) break;
-                GameObject obj = Instantiate (actionListElementPrefab, placeHolder.transform);
-                ActionListDraggableElement actionListElement = obj.GetComponent<ActionListDraggableElement>();
-                actionListElement.SetAction (toDoList.Items[index]);
-                actionListElement.SetIndex (index);
-                uiElements.Add(obj); // store object reference
+                Action action = toDoList.Items[index];
+                if (onDrag && DraggedElement != null && DraggedElement.GetAction() == action)
+                {
+                    // if the action if on the dragged element, do nothing
+                }
+                else
+                {
+                    GameObject obj = Instantiate(actionListElementPrefab, placeHolder.transform);
+                    ActionListDraggableElement actionListElement = obj.GetComponent<ActionListDraggableElement>();
+                    actionListElement.SetAction(action);
+                    uiElements.Add(obj); // store object reference
+                }
                 index++;
             }
         }

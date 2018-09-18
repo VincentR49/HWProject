@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu (menuName = "Scriptable Objects/Actions/Cooking")]
-public class Cooking : Action
+public class Cook : Action
 {
 	// Precise specific attributes later
     public override bool Execute(GameObject player, GameObject interactibleObject)

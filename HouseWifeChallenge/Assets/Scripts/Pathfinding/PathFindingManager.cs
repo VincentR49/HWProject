@@ -65,7 +65,7 @@ public class PathFindingManager : MonoBehaviour {
                 return null;
             }
         }
-        Debug.Log("number of iterations: " + cpt);
+        //Debug.Log("number of iterations: " + cpt);
         currentPath = GetPathFromNode(currentNode);
         return currentPath;
     }
