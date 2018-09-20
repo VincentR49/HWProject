@@ -10,7 +10,6 @@ public class ActionListDraggableElement : MonoBehaviour, IBeginDragHandler, IEnd
 
     [SerializeField]
     private Action action;
-    public Color dragColor = Color.red;
     public Color currentActionColor = Color.yellow;
     public ActionTracker currentTracker;
 
@@ -23,13 +22,13 @@ public class ActionListDraggableElement : MonoBehaviour, IBeginDragHandler, IEnd
     public delegate void DragBeginAction (ActionListDraggableElement source);
     public static event DragBeginAction DragBeginEventDelegate;
 
-    private Text text;
+    private Image iconPlaceHolder;
     private RawImage background;
     private Color initColor;
 
 	private void Awake () {
         background = GetComponent<RawImage>();
-        text = transform.GetChild(0).GetComponent<Text>();
+        iconPlaceHolder = transform.GetChild(0).GetComponent<Image>();
         initColor = background.color;
         UpdateContent();
     }
@@ -71,13 +70,19 @@ public class ActionListDraggableElement : MonoBehaviour, IBeginDragHandler, IEnd
     {
         if (action != null)
         {
-            text.text = action.name;
+            if (action.icon != null)
+            {
+                iconPlaceHolder.sprite = action.icon;
+            }
+            else
+            {
+                iconPlaceHolder.sprite = null;
+            }
         }
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        background.color = dragColor;
         DragBeginEventDelegate?.Invoke(this);
     }
 

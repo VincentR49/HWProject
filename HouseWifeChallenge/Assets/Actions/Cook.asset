@@ -13,5 +13,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Cook
   description: 
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: e72164296061e7e4199b580fe3dcc287, type: 3}
   duration: 2.39

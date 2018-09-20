@@ -13,5 +13,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Eat
   description: 
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 68dd916c28413bb43ac2dc797c64917e, type: 3}
   duration: 5
