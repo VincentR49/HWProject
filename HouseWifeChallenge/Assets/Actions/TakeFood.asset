@@ -13,5 +13,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Take Food
   description: 
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 9dbd1e1cc4af7244c9bb2201b0701b17, type: 3}
   duration: 1

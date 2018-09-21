@@ -74,6 +74,11 @@ public class PlayerController : MonoBehaviour {
     // if no path exist, return false
     public bool MoveToObject(GameObject targetObj)
     {
+        if (targetObj == null)
+        {
+            Debug.Log("Error target object null");
+            return false;
+        }
         pathFindingManager.grid.ScanObstacles(); // important to check where the colliders are
         List<Node> potentialNodes = pathFindingManager.grid.GetFreeNeighbours(targetObj);
         string str = "";
@@ -129,6 +134,8 @@ public class PlayerController : MonoBehaviour {
 	{
 		isFollowingPath = false;
 		path = null;
+        playerMove = Vector2.zero;
+        transform.position = nextPathPosition; // teleport to the final position to be sure
         nextPathPosition = new Vector2(transform.position.x, transform.position.y);
 	}
 
@@ -136,22 +143,20 @@ public class PlayerController : MonoBehaviour {
     private void FollowPath()
 	{
         Vector2 currentPosition = new Vector2(transform.position.x, transform.position.y);
-        Vector2 movement = nextPathPosition - currentPosition;
-		if (GetNorm2(movement) <  2 * speed * Time.deltaTime)
+        playerMove = nextPathPosition - currentPosition;
+		if (GetNorm2(playerMove) <  2 * speed * Time.deltaTime)
 		{
-			if (path != null && path.Count != 0)
+			if (path != null && path.Count != 0) // go to next node in the path
 			{
 				nextPathPosition = path.Dequeue();
-				movement = nextPathPosition - currentPosition;
+                playerMove = nextPathPosition - currentPosition;
 			}
 			else
 			{
-				movement = Vector2.zero;
 				StopFollowingPath();
 			}
 		}
-		playerMove = movement;
-	}
+    }
 
     
 }

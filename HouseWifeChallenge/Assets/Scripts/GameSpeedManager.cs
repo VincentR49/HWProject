@@ -5,11 +5,8 @@ using UnityEngine;
 using UnityEngine.Events;
 
 // Manager to change the game speed
-public class TimeManager : MonoBehaviour {
+public class GameSpeedManager : MonoBehaviour {
 
-    [Tooltip("Reference to the current game mode")]
-    public GameMode gameMode; 
-	
 	[Tooltip("Reference to the floatVariable corresponding to normal speed")]
 	public FloatVariable normalSpeed;
 	
@@ -18,8 +15,11 @@ public class TimeManager : MonoBehaviour {
 	
 	[Tooltip("Reference to the floatVariable corresponding to very fast speed")]
 	public FloatVariable veryFastSpeed;
-	
-	// Controls to change the speed
+
+    public GameEvent gameSpeedChanged;
+
+
+    // Controls to change the speed
     public String pauseKey = "space";
     public String normalSpeedKey = "1";
 	public String fastSpeedKey = "2";
@@ -55,5 +55,7 @@ public class TimeManager : MonoBehaviour {
 	public void ChangeGameSpeed(float newSpeed)
     {
         Time.timeScale = newSpeed;
+        Debug.Log("Changed game speed to " + newSpeed);
+        gameSpeedChanged.Raise();
     }
 }

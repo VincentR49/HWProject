@@ -8,10 +8,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0c06dde313513f4495b3cbd25c6723c, type: 3}
-  m_Name: Eat
+  m_Script: {fileID: 11500000, guid: 5a4182d83bf6d92449f38ad0d37810ef, type: 3}
+  m_Name: NormalSpeed
   m_EditorClassIdentifier: 
-  name: Eat
-  description: 
-  icon: {fileID: 21300000, guid: 980c94ced05e86b4bb6b6a734f47fcaf, type: 3}
-  duration: 5
+  Value: 1

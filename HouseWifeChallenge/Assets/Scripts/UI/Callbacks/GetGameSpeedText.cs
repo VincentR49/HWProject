@@ -25,18 +25,16 @@ public class GetGameSpeedText : MonoBehaviour {
 	// A lancer lorsque la vitesse de jeu change
     public void UpdateText()
     {
-        text.text = getTextFromGameSpeed();
+        text.text = GetTextFromGameSpeed();
     }
 	
-	private String getTextFromGameSpeed()
+	private string GetTextFromGameSpeed()
 	{
 		float gameSpeed = Time.timeScale;
-		switch (gameSpeed)
-		{
-			case normalSpeed: return "Normal Speed";
-			case 0f: return "Pause";
-			case fastSpeed: return "Fast Speed";
-			case veryFastSpeed: return "Very Fast Speed";
-		}
+        if (gameSpeed == normalSpeed.Value) return "Normal Speed";
+        if (gameSpeed == 0f) return "Pause";
+        if (gameSpeed == fastSpeed.Value) return "Fast Speed";
+        if (gameSpeed == veryFastSpeed.Value) return "Very Fast Speed";
+        return "Unknown speed";
 	}
 }

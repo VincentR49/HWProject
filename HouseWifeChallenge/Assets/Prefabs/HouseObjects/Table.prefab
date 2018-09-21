@@ -82,7 +82,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc8083a8762fa7a4fb188328bb6965d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  action: {fileID: 11400000, guid: a9661f5851b5ae245aa27f3fc1b0c0a0, type: 2}
+  actions:
+  - {fileID: 11400000, guid: a9661f5851b5ae245aa27f3fc1b0c0a0, type: 2}
   interactibleObjectList: {fileID: 11400000, guid: d252078ddcbdab24690e321500c3ff87,
     type: 2}
 --- !u!114 &114121316851572552
