@@ -16,34 +16,32 @@ public class GameModeController : MonoBehaviour {
     public String playerControlKey = "p";
     public String playerControlAIKey = "m";
     public String objectPlacementKey = "o";
-
-    private Dictionary<GameModeType, String> dictionaryKeyGameMode;
-
+	
     void Start () {
         ChangeGameMode(startingMode);
-        InitKeyDictionary();
     }
 
     private void Update()
     {
-        foreach (KeyValuePair<GameModeType, String> entry in dictionaryKeyGameMode)
-        {
-            if (Input.GetKeyDown(entry.Value))
-            {
-                ChangeGameMode(entry.Key);
-            }
-        }
-    }
-
-    private void InitKeyDictionary()
-    {
-        dictionaryKeyGameMode = new Dictionary<GameModeType, string>
-        {
-            { GameModeType.None,  noneModeKey},
-            { GameModeType.PlayerControl,  playerControlKey},
-            { GameModeType.PlayerControlAI,  playerControlAIKey},
-            { GameModeType.ObjectPlacement,  objectPlacementKey}
-        };
+		if (Input.GetKeyDown(noneModeKey))
+		{
+			ChangeGameMode(GameModeType.None);
+		}
+		
+		if (Input.GetKeyDown(playerControlKey))
+		{
+			ChangeGameMode(GameModeType.PlayerControl);
+		}
+		
+		if (Input.GetKeyDown(playerControlAIKey))
+		{
+			ChangeGameMode(GameModeType.PlayerControlAI);
+		}
+		
+		if (Input.GetKeyDown(objectPlacementKey))
+		{
+			ChangeGameMode(GameModeType.ObjectPlacement);
+		}
     }
 
     private void ChangeGameMode(GameModeType type)

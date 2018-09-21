@@ -160,9 +160,13 @@ public class ActionPerformerAI : ActionPerformer
 			Interactible interactible = obj.GetComponent<Interactible>();
 			if (interactible != null)
 			{
-				if (interactible.action.GetType().Equals(action.GetType()))
+				foreach (Action action in interactible.actions)
 				{
-                    gameObjects.Add(obj);
+					if (interactible.action.GetType().Equals(action.GetType()))
+					{
+						gameObjects.Add(obj);
+						break;
+					}
 				}
 			}
 			else

@@ -6,7 +6,7 @@ using UnityEngine;
 // Action container
 public class Interactible : MonoBehaviour
 {
-	public Action action;
+	public List<Action> actions;
 	public GameObjectSet interactibleObjectList;
 	
 	public void Start()

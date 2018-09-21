@@ -24,7 +24,7 @@ public class ActionPerformerManual : ActionPerformer
             GameObject interactiveObject = GetInteractiveObjectAtPosition(mousePosition);
 			if (interactiveObject != null)
 			{
-				InitAction(interactiveObject.GetComponent<Interactible>().action, interactiveObject);
+				InitAction(interactiveObject.GetComponent<Interactible>().actions[0], interactiveObject);
 				playerController.MoveToObject(interactiveObject);
 			}
 		}

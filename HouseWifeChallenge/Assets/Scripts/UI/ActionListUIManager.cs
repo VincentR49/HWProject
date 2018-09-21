@@ -12,7 +12,6 @@ public class ActionListUIManager : MonoBehaviour {
     public GameEvent toDoListChanged;
     public GameObject actionListElementPrefab;
 
-	
     private List<GameObject> uiElements;
     private List<GameObject> placeHolders;
     private ActionSet lastToList;
@@ -27,7 +26,6 @@ public class ActionListUIManager : MonoBehaviour {
             return tempDragContainer.transform.GetChild(0).gameObject.GetComponent<ActionListDraggableElement>();
         }
     }
-
 
     void OnEnable()
     {
